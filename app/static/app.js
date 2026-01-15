@@ -13,4 +13,10 @@
       localStorage.setItem('color-scheme', 'dark');
     }
   };
+
+  window.toggleMobileNav = function () {
+    const el = document.getElementById('mobileNav');
+    if (!el) return;
+    el.classList.toggle('hidden');
+  };
 })();

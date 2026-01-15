@@ -2,9 +2,9 @@
 {% block content %}
   <div class="flex items-start justify-between gap-4 flex-wrap">
     <div>
-      <div class="text-xs uppercase tracking-[0.2em] text-slate-400">Security</div>
+      <div class="text-xs uppercase tracking-[0.2em]" style="color: var(--admin-muted);">Security</div>
       <h1 class="text-xl font-semibold mt-1">Audit logs</h1>
-      <p class="text-sm text-slate-300 mt-2 max-w-2xl">Trace privileged events such as logins, consent changes, uploads, and role updates.</p>
+      <p class="text-sm mt-2 max-w-2xl" style="color: var(--admin-muted);">Trace privileged events such as logins, consent changes, uploads, and role updates.</p>
     </div>
     <div class="flex gap-3 flex-wrap">
       <a class="admin-btn admin-btn-soft" href="{{ url_for('admin.overview') }}">
@@ -19,17 +19,17 @@
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
-    <div class="admin-card p-6 bg-slate-950 border border-slate-800 lg:col-span-2">
-      <div class="text-xs uppercase tracking-[0.2em] text-slate-400">Recent events</div>
-      <div class="text-sm text-slate-300 mt-2">Showing latest {{ logs|length }} entries (max 200).</div>
+    <div class="admin-card p-6 lg:col-span-2">
+      <div class="text-xs uppercase tracking-[0.2em]" style="color: var(--admin-muted);">Recent events</div>
+      <div class="text-sm mt-2" style="color: var(--admin-muted);">Showing latest {{ logs|length }} entries (max 200).</div>
     </div>
-    <div class="admin-card p-6 bg-slate-950 border border-slate-800">
-      <div class="text-xs uppercase tracking-[0.2em] text-slate-400">Interpretation</div>
-      <div class="text-sm text-slate-300 mt-3 leading-relaxed">Actor is the user id, or <span class="text-slate-200 font-medium">system</span> for background operations.</div>
+    <div class="admin-card p-6">
+      <div class="text-xs uppercase tracking-[0.2em]" style="color: var(--admin-muted);">Interpretation</div>
+      <div class="text-sm mt-3 leading-relaxed" style="color: var(--admin-muted);">Actor is the user id, or <span class="font-medium" style="color: var(--admin-text);">system</span> for background operations.</div>
     </div>
   </div>
 
-  <div class="admin-card p-6 mt-6 bg-slate-950 border border-slate-800 overflow-x-auto">
+  <div class="admin-card p-6 mt-6 overflow-x-auto">
     <table class="min-w-full admin-table">
       <thead>
         <tr>
@@ -41,11 +41,11 @@
       </thead>
       <tbody>
         {% for l in logs %}
-          <tr class="border-t border-slate-800">
-            <td class="px-4 py-3 text-sm text-slate-200">{{ l.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-            <td class="px-4 py-3 text-sm text-slate-200">{{ l.actor_id or 'system' }}</td>
-            <td class="px-4 py-3 text-sm text-slate-200">{{ l.action }}</td>
-            <td class="px-4 py-3 text-sm text-slate-200">{{ l.entity }}</td>
+          <tr style="border-top: 1px solid var(--admin-border);">
+            <td class="px-4 py-3 text-sm">{{ l.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td class="px-4 py-3 text-sm">{{ l.actor_id or 'system' }}</td>
+            <td class="px-4 py-3 text-sm">{{ l.action }}</td>
+            <td class="px-4 py-3 text-sm">{{ l.entity }}</td>
           </tr>
         {% endfor %}
       </tbody>

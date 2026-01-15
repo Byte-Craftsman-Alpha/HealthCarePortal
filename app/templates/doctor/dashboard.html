@@ -1,34 +1,99 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1 class="text-xl font-semibold text-slate-900">Doctor Dashboard</h1>
-  <p class="text-sm text-slate-500 mt-1">You can only access patient data when consent is active.</p>
-
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-    <div class="minimal-card p-5">
-      <div class="text-xs uppercase tracking-wider text-slate-500">Active consents</div>
-      <div class="text-2xl font-semibold text-slate-900 mt-2">{{ active_consents }}</div>
+  <div class="flex items-start justify-between gap-4 flex-wrap">
+    <div>
+      <h1 class="text-xl font-semibold" style="color: var(--text-primary);">Dashboard</h1>
+      <p class="text-sm mt-1" style="color: var(--text-muted);">You can only access patient data when consent is active.</p>
     </div>
-    <div class="minimal-card p-5 md:col-span-2">
-      <div class="flex items-center justify-between">
-        <div class="text-xs uppercase tracking-wider text-slate-500">Upcoming appointments</div>
-        <a class="text-sm text-indigo-600 font-medium" href="{{ url_for('doctor.appointments') }}">View all</a>
-      </div>
-      <div class="mt-3 space-y-2">
-        {% if upcoming|length == 0 %}
-          <div class="text-sm text-slate-500">No upcoming appointments.</div>
-        {% endif %}
-        {% for a in upcoming %}
-          <div class="border border-slate-200 rounded-xl p-3 flex items-center justify-between gap-4">
-            <div>
-              <div class="text-sm font-medium text-slate-900">{{ a.scheduled_at.strftime('%Y-%m-%d %H:%M') }}</div>
-              <div class="text-xs text-slate-500">Patient #{{ a.patient_id }} · Status: {{ a.status }}</div>
+    <div class="flex items-center gap-2">
+      <a class="portal-btn-soft" href="{{ url_for('doctor.patients') }}">
+        <span class="iconify" data-icon="solar:users-group-rounded-linear"></span>
+        Patients
+      </a>
+      <a class="minimal-btn minimal-btn-primary" href="{{ url_for('doctor.appointments') }}">
+        <span class="iconify" data-icon="solar:calendar-mark-linear"></span>
+        Schedule
+      </a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+    <div class="lg:col-span-8 space-y-6">
+      <div class="minimal-card p-6">
+        <div class="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <div class="text-sm" style="color: var(--text-muted);">Welcome back,</div>
+            <div class="text-xl font-semibold" style="color: var(--text-primary);">Dr. {{ current_user.name or 'Doctor' }}</div>
+            <div class="text-xs mt-2" style="color: var(--text-muted);">Here are your upcoming appointments.</div>
+          </div>
+          <a class="portal-btn-soft" href="{{ url_for('doctor.appointments') }}">
+            <span class="iconify" data-icon="solar:eye-linear"></span>
+            View all
+          </a>
+        </div>
+
+        <div class="mt-4 space-y-3">
+          {% if upcoming|length == 0 %}
+            <div class="text-sm" style="color: var(--text-muted);">No upcoming appointments.</div>
+          {% endif %}
+
+          {% for a in upcoming %}
+            <div class="rounded-xl p-4 flex items-center justify-between gap-4" style="border: 1px solid var(--border-secondary);">
+              <div>
+                <div class="text-sm font-medium" style="color: var(--text-primary);">{{ a.scheduled_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                <div class="text-xs mt-1" style="color: var(--text-muted);">Patient #{{ a.patient_id }} · Status: {{ a.status }}</div>
+              </div>
+              <a class="portal-btn-soft" href="{{ url_for('doctor.prescribe', appointment_id=a.id) }}">
+                <span class="iconify" data-icon="solar:pill-linear"></span>
+                Prescribe
+              </a>
             </div>
-            <a class="minimal-btn admin-btn-soft" href="{{ url_for('doctor.prescribe', appointment_id=a.id) }}">
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-4 space-y-6">
+      <div class="minimal-card p-5">
+        <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Active consents</div>
+        <div class="text-3xl font-semibold mt-2" style="color: var(--text-primary);">{{ active_consents }}</div>
+        <div class="text-xs mt-2" style="color: var(--text-muted);">Only consented patients appear in your list.</div>
+        <div class="mt-4">
+          <a class="portal-btn-soft w-full justify-center" href="{{ url_for('doctor.patients') }}">
+            <span class="iconify" data-icon="solar:user-id-linear"></span>
+            View consented patients
+          </a>
+        </div>
+      </div>
+
+      <div class="minimal-card p-5">
+        <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Next appointment</div>
+        {% if upcoming|length > 0 %}
+          <div class="text-sm font-semibold mt-2" style="color: var(--text-primary);">{{ upcoming[0].scheduled_at.strftime('%Y-%m-%d %H:%M') }}</div>
+          <div class="text-xs mt-1" style="color: var(--text-muted);">Patient #{{ upcoming[0].patient_id }} · Status: {{ upcoming[0].status }}</div>
+          <div class="mt-4">
+            <a class="minimal-btn minimal-btn-primary w-full justify-center" href="{{ url_for('doctor.prescribe', appointment_id=upcoming[0].id) }}">
               <span class="iconify" data-icon="solar:pill-linear"></span>
-              Prescribe
+              Start consult
             </a>
           </div>
-        {% endfor %}
+        {% else %}
+          <div class="text-sm mt-2" style="color: var(--text-muted);">No upcoming appointments.</div>
+        {% endif %}
+      </div>
+
+      <div class="minimal-card p-5">
+        <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Quick actions</div>
+        <div class="mt-4 space-y-2">
+          <a class="portal-btn-soft w-full justify-center" href="{{ url_for('doctor.appointments') }}">
+            <span class="iconify" data-icon="solar:calendar-search-linear"></span>
+            View schedule
+          </a>
+          <a class="portal-btn-soft w-full justify-center" href="{{ url_for('doctor.patients') }}">
+            <span class="iconify" data-icon="solar:shield-check-linear"></span>
+            Verify consent
+          </a>
+        </div>
       </div>
     </div>
   </div>
