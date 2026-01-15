@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register — Healthcare Portal</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.15/dist/tailwind.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-6">
+    <div class="w-full max-w-xl">
+      <div class="text-center mb-6">
+        <div class="text-xl font-semibold text-slate-900">Create your account</div>
+        <div class="text-sm text-slate-500">Choose a role and start a secure workflow</div>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-2xl shadow-[0_30px_80px_rgba(15,23,42,0.15),0_2px_10px_rgba(15,23,42,0.06)] p-6">
+        {% if error %}
+          <div class="mb-4 text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl p-3">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="email">Email</label>
+              <input class="minimal-input" id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="role">Role</label>
+              <select class="minimal-input" id="role" name="role" required>
+                <option value="patient">Patient</option>
+                <option value="doctor">Doctor</option>
+                <option value="pharmacy">Pharmacy</option>
+                <option value="emergency">Emergency</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="password">Password</label>
+              <input class="minimal-input" id="password" name="password" type="password" autocomplete="new-password" required />
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="hospital_id">Hospital ID (doctor)</label>
+              <input class="minimal-input" id="hospital_id" name="hospital_id" type="text" placeholder="HOSP-001" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="specialization">Specialization (doctor)</label>
+            <input class="minimal-input" id="specialization" name="specialization" type="text" placeholder="General Medicine" />
+          </div>
+
+          <button class="minimal-btn minimal-btn-primary w-full" type="submit">
+            <span class="iconify" data-icon="solar:user-plus-linear"></span>
+            Create account
+          </button>
+        </form>
+
+        <div class="mt-6 text-sm text-slate-500 text-center">
+          Already have an account?
+          <a class="text-indigo-600 font-medium" href="{{ url_for('auth.login') }}">Sign in</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

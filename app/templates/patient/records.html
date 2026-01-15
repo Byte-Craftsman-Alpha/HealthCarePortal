@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="flex items-start justify-between gap-4 flex-wrap">
+    <div>
+      <h1 class="text-xl font-semibold text-slate-900">Medical Records</h1>
+      <p class="text-sm text-slate-500 mt-1">Upload and organize documents you own.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+    <div class="minimal-card p-6 lg:col-span-1">
+      <h2 class="text-lg font-semibold text-slate-900">Upload</h2>
+      <form method="post" enctype="multipart/form-data" class="space-y-4 mt-4">
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="file">File</label>
+          <input class="minimal-input" id="file" name="file" type="file" required />
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="description">Description</label>
+          <input class="minimal-input" id="description" name="description" type="text" placeholder="e.g., MRI report, blood test" />
+        </div>
+        <button class="minimal-btn minimal-btn-primary w-full" type="submit">
+          <span class="iconify" data-icon="solar:upload-linear"></span>
+          Upload
+        </button>
+      </form>
+    </div>
+
+    <div class="minimal-card p-6 lg:col-span-2">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-slate-900">Your records</h2>
+        <span class="text-xs text-slate-500">{{ records|length }} total</span>
+      </div>
+
+      <div class="mt-4 space-y-3">
+        {% if records|length == 0 %}
+          <div class="text-sm text-slate-500">No records uploaded yet.</div>
+        {% endif %}
+
+        {% for r in records %}
+          <div class="border border-slate-200 rounded-2xl p-4 flex items-start justify-between gap-4">
+            <div>
+              <div class="text-sm font-medium text-slate-900">{{ r.description or 'Medical record' }}</div>
+              <div class="text-xs text-slate-500 mt-1">Uploaded {{ r.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</div>
+              <div class="text-xs text-slate-500 mt-1">Path: {{ r.file_path }}</div>
+            </div>
+            <a class="minimal-btn admin-btn-soft" href="{{ url_for('static', filename=r.file_path) }}" target="_blank" rel="noopener">
+              <span class="iconify" data-icon="solar:eye-linear"></span>
+              View
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

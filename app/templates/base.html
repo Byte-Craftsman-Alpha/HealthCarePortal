@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title or "Healthcare Portal" }}</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.15/dist/tailwind.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 text-slate-800">
+    <div class="grid grid-cols-1 md:grid-cols-[280px_1fr] min-h-screen">
+      <aside class="p-6 border-b md:border-b-0 md:border-r border-slate-200 bg-white">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[11px] uppercase tracking-[0.2em] text-slate-500">Patient-Centric</div>
+            <div class="text-xl font-semibold text-slate-900">Healthcare Portal</div>
+          </div>
+          <button type="button" class="minimal-btn admin-btn-soft" onclick="toggleTheme()" aria-label="Toggle theme">
+            <span class="iconify" data-icon="solar:sun-2-linear"></span>
+          </button>
+        </div>
+
+        <nav class="mt-6 space-y-2">
+          {% set role = current_user.role if current_user.is_authenticated else '' %}
+
+          {% if role == 'patient' %}
+            <a class="minimal-nav-item {% if request.endpoint == 'patient.dashboard' %}active{% endif %}" href="{{ url_for('patient.dashboard') }}">
+              <span class="iconify" data-icon="solar:widget-2-linear"></span>
+              <span class="text-sm font-medium">Dashboard</span>
+            </a>
+            <a class="minimal-nav-item {% if request.endpoint == 'patient.records' %}active{% endif %}" href="{{ url_for('patient.records') }}">
+              <span class="iconify" data-icon="solar:document-add-linear"></span>
+              <span class="text-sm font-medium">Medical Records</span>
+            </a>
+            <a class="minimal-nav-item {% if request.endpoint == 'patient.appointments' %}active{% endif %}" href="{{ url_for('patient.appointments') }}">
+              <span class="iconify" data-icon="solar:calendar-mark-linear"></span>
+              <span class="text-sm font-medium">Appointments</span>
+            </a>
+            <a class="minimal-nav-item {% if request.endpoint == 'patient.consents' %}active{% endif %}" href="{{ url_for('patient.consents') }}">
+              <span class="iconify" data-icon="solar:shield-check-linear"></span>
+              <span class="text-sm font-medium">Doctor Consents</span>
+            </a>
+            <a class="minimal-nav-item {% if request.endpoint == 'patient.prescriptions' %}active{% endif %}" href="{{ url_for('patient.prescriptions') }}">
+              <span class="iconify" data-icon="solar:pill-linear"></span>
+              <span class="text-sm font-medium">Prescriptions</span>
+            </a>
+            <a class="minimal-nav-item {% if request.endpoint == 'patient.emergency_profile' %}active{% endif %}" href="{{ url_for('patient.emergency_profile') }}">
+              <span class="iconify" data-icon="solar:heart-pulse-linear"></span>
+              <span class="text-sm font-medium">Emergency Profile</span>
+            </a>
+          {% elif role == 'doctor' %}
+            <a class="minimal-nav-item {% if request.endpoint == 'doctor.dashboard' %}active{% endif %}" href="{{ url_for('doctor.dashboard') }}">
+              <span class="iconify" data-icon="solar:widget-2-linear"></span>
+              <span class="text-sm font-medium">Dashboard</span>
+            </a>
+            <a class="minimal-nav-item {% if request.endpoint == 'doctor.appointments' %}active{% endif %}" href="{{ url_for('doctor.appointments') }}">
+              <span class="iconify" data-icon="solar:calendar-mark-linear"></span>
+              <span class="text-sm font-medium">Appointments</span>
+            </a>
+            <a class="minimal-nav-item {% if request.endpoint == 'doctor.patients' %}active{% endif %}" href="{{ url_for('doctor.patients') }}">
+              <span class="iconify" data-icon="solar:users-group-rounded-linear"></span>
+              <span class="text-sm font-medium">Consented Patients</span>
+            </a>
+          {% elif role == 'pharmacy' %}
+            <a class="minimal-nav-item {% if request.endpoint == 'pharmacy.queue' %}active{% endif %}" href="{{ url_for('pharmacy.queue') }}">
+              <span class="iconify" data-icon="solar:pill-linear"></span>
+              <span class="text-sm font-medium">Prescription Queue</span>
+            </a>
+          {% elif role == 'emergency' %}
+            <a class="minimal-nav-item {% if request.endpoint == 'emergency.lookup' %}active{% endif %}" href="{{ url_for('emergency.lookup') }}">
+              <span class="iconify" data-icon="solar:shield-warning-linear"></span>
+              <span class="text-sm font-medium">Emergency Lookup</span>
+            </a>
+          {% endif %}
+        </nav>
+
+        <div class="mt-8 pt-6 border-t border-slate-200">
+          <form method="post" action="{{ url_for('auth.logout') }}">
+            <button class="minimal-btn minimal-btn-primary w-full" type="submit">
+              <span class="iconify" data-icon="solar:logout-2-linear"></span>
+              Logout
+            </button>
+          </form>
+        </div>
+      </aside>
+
+      <main class="p-6 md:p-8">
+        <div class="fade-in">
+          {% if error %}
+            <div class="minimal-card p-4 border border-rose-200 bg-rose-50 text-rose-700 mb-6">{{ error }}</div>
+          {% endif %}
+          {% block content %}{% endblock %}
+        </div>
+      </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

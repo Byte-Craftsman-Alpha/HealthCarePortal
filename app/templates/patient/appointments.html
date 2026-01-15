@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1 class="text-xl font-semibold text-slate-900">Appointments</h1>
+  <p class="text-sm text-slate-500 mt-1">Book and track appointments. Doctors only see you if you grant consent.</p>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+    <div class="minimal-card p-6 lg:col-span-1">
+      <h2 class="text-lg font-semibold text-slate-900">Book</h2>
+      <form method="post" class="space-y-4 mt-4">
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="doctor_id">Doctor</label>
+          <select class="minimal-input" id="doctor_id" name="doctor_id" required>
+            {% for d in doctors %}
+              <option value="{{ d.user_id }}">Doctor #{{ d.user_id }} · {{ d.specialization }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="scheduled_at">Date & time</label>
+          <input class="minimal-input" id="scheduled_at" name="scheduled_at" type="datetime-local" required />
+        </div>
+        <button class="minimal-btn minimal-btn-primary w-full" type="submit">
+          <span class="iconify" data-icon="solar:calendar-add-linear"></span>
+          Request appointment
+        </button>
+      </form>
+    </div>
+
+    <div class="minimal-card p-6 lg:col-span-2">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-slate-900">Your schedule</h2>
+        <span class="text-xs text-slate-500">{{ appointments|length }} items</span>
+      </div>
+
+      <div class="mt-4 space-y-3">
+        {% if appointments|length == 0 %}
+          <div class="text-sm text-slate-500">No appointments booked yet.</div>
+        {% endif %}
+
+        {% for a in appointments %}
+          <div class="border border-slate-200 rounded-2xl p-4 flex items-start justify-between gap-4">
+            <div>
+              <div class="text-sm font-medium text-slate-900">{{ a.scheduled_at.strftime('%Y-%m-%d %H:%M') }}</div>
+              <div class="text-xs text-slate-500 mt-1">Doctor #{{ a.doctor_id }}</div>
+              <div class="text-xs text-slate-500 mt-1">Status: {{ a.status }}</div>
+            </div>
+            <span class="text-xs text-slate-500">Appointment #{{ a.id }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

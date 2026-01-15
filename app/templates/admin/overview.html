@@ -1,0 +1,88 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+  <div class="flex items-start justify-between gap-4 flex-wrap">
+    <div>
+      <div class="text-xs uppercase tracking-[0.2em] text-slate-400">System</div>
+      <h1 class="text-xl font-semibold mt-1">Overview</h1>
+      <p class="text-sm text-slate-300 mt-2 max-w-2xl">A dedicated admin dashboard for operational visibility, role governance, and audit review.</p>
+    </div>
+    <div class="flex gap-3 flex-wrap">
+      <a class="admin-btn admin-btn-soft" href="{{ url_for('admin.users') }}">
+        <span class="iconify" data-icon="solar:users-group-rounded-linear"></span>
+        Manage users
+      </a>
+      <a class="admin-btn admin-btn-soft" href="{{ url_for('admin.doctors') }}">
+        <span class="iconify" data-icon="solar:stethoscope-linear"></span>
+        Manage doctors
+      </a>
+      <a class="admin-btn admin-btn-soft" href="{{ url_for('admin.audit_logs') }}">
+        <span class="iconify" data-icon="solar:document-text-linear"></span>
+        View audit logs
+      </a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+    <div class="admin-card p-6 bg-slate-950 border border-slate-800">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <div class="text-xs uppercase tracking-[0.2em] text-slate-400">Users</div>
+          <div class="text-3xl font-semibold mt-3">{{ counts.users }}</div>
+        </div>
+        <div class="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center">
+          <span class="iconify" data-icon="solar:user-id-linear"></span>
+        </div>
+      </div>
+      <div class="mt-4 text-sm text-slate-300">Total authenticated identities across all roles.</div>
+    </div>
+
+    <div class="admin-card p-6 bg-slate-950 border border-slate-800">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <div class="text-xs uppercase tracking-[0.2em] text-slate-400">Doctors</div>
+          <div class="text-3xl font-semibold mt-3">{{ counts.doctors }}</div>
+        </div>
+        <div class="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center">
+          <span class="iconify" data-icon="solar:stethoscope-linear"></span>
+        </div>
+      </div>
+      <div class="mt-4 text-sm text-slate-300">Registered clinicians managed under hospital oversight.</div>
+    </div>
+
+    <div class="admin-card p-6 bg-slate-950 border border-slate-800">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <div class="text-xs uppercase tracking-[0.2em] text-slate-400">Audit logs</div>
+          <div class="text-3xl font-semibold mt-3">{{ counts.audit_logs }}</div>
+        </div>
+        <div class="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center">
+          <span class="iconify" data-icon="solar:document-text-linear"></span>
+        </div>
+      </div>
+      <div class="mt-4 text-sm text-slate-300">Recorded privileged actions and access events.</div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
+    <div class="admin-card p-6 bg-slate-950 border border-slate-800">
+      <div class="text-xs uppercase tracking-[0.2em] text-slate-400">Common actions</div>
+      <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <a class="admin-btn admin-btn-primary w-full justify-start" href="{{ url_for('admin.users') }}">
+          <span class="iconify" data-icon="solar:settings-linear"></span>
+          Review roles
+        </a>
+        <a class="admin-btn admin-btn-soft w-full justify-start" href="{{ url_for('admin.audit_logs') }}">
+          <span class="iconify" data-icon="solar:shield-check-linear"></span>
+          Investigate events
+        </a>
+      </div>
+    </div>
+
+    <div class="admin-card p-6 bg-slate-950 border border-slate-800">
+      <div class="text-xs uppercase tracking-[0.2em] text-slate-400">Security note</div>
+      <div class="mt-4 text-sm text-slate-300 leading-relaxed">
+        Doctors must have active consent to access patient data. Emergency access is limited to critical fields only.
+      </div>
+    </div>
+  </div>
+{% endblock %}

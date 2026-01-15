@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="flex items-start justify-between gap-4 flex-wrap">
+    <div>
+      <h1 class="text-xl font-semibold text-slate-900">Patient Dashboard</h1>
+      <p class="text-sm text-slate-500 mt-1">Your data stays yours. You decide who can access it.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+    <div class="minimal-card p-5">
+      <div class="text-xs uppercase tracking-wider text-slate-500">Active consents</div>
+      <div class="text-2xl font-semibold text-slate-900 mt-2">{{ active_consents }}</div>
+    </div>
+    <div class="minimal-card p-5">
+      <div class="text-xs uppercase tracking-wider text-slate-500">Recent records</div>
+      <div class="text-2xl font-semibold text-slate-900 mt-2">{{ recent_records|length }}</div>
+    </div>
+    <div class="minimal-card p-5">
+      <div class="text-xs uppercase tracking-wider text-slate-500">Upcoming appointments</div>
+      <div class="text-2xl font-semibold text-slate-900 mt-2">{{ recent_appointments|length }}</div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+    <div class="minimal-card p-6">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-slate-900">Recent activity</h2>
+        <span class="text-xs text-slate-500">Last 5</span>
+      </div>
+      <div class="mt-4 space-y-3">
+        {% if recent_appointments|length == 0 and recent_records|length == 0 %}
+          <div class="text-sm text-slate-500">No activity yet.</div>
+        {% endif %}
+
+        {% for a in recent_appointments %}
+          <div class="flex items-start justify-between gap-4 border border-slate-200 rounded-xl p-4">
+            <div>
+              <div class="text-sm font-medium text-slate-900">Appointment</div>
+              <div class="text-xs text-slate-500 mt-1">{{ a.scheduled_at.strftime('%Y-%m-%d %H:%M') }} · Status: {{ a.status }}</div>
+            </div>
+            <span class="text-xs text-slate-500">Doctor #{{ a.doctor_id }}</span>
+          </div>
+        {% endfor %}
+
+        {% for r in recent_records %}
+          <div class="flex items-start justify-between gap-4 border border-slate-200 rounded-xl p-4">
+            <div>
+              <div class="text-sm font-medium text-slate-900">Record uploaded</div>
+              <div class="text-xs text-slate-500 mt-1">{{ r.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</div>
+              {% if r.description %}
+                <div class="text-sm text-slate-700 mt-2">{{ r.description }}</div>
+              {% endif %}
+            </div>
+            <a class="text-sm text-indigo-600 font-medium" href="{{ url_for('static', filename=r.file_path) }}" target="_blank" rel="noopener">Open</a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="minimal-card p-6">
+      <h2 class="text-lg font-semibold text-slate-900">Emergency summary</h2>
+      <p class="text-sm text-slate-500 mt-1">Visible to Emergency role only (read-only subset).</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+        <div class="border border-slate-200 rounded-xl p-4">
+          <div class="text-xs uppercase tracking-wider text-slate-500">Blood group</div>
+          <div class="text-sm font-medium text-slate-900 mt-2">{{ patient.blood_group or 'Not set' }}</div>
+        </div>
+        <div class="border border-slate-200 rounded-xl p-4">
+          <div class="text-xs uppercase tracking-wider text-slate-500">Allergies</div>
+          <div class="text-sm font-medium text-slate-900 mt-2">{{ patient.allergies or 'Not set' }}</div>
+        </div>
+        <div class="border border-slate-200 rounded-xl p-4">
+          <div class="text-xs uppercase tracking-wider text-slate-500">Chronic conditions</div>
+          <div class="text-sm font-medium text-slate-900 mt-2">{{ patient.chronic_conditions or 'Not set' }}</div>
+        </div>
+        <div class="border border-slate-200 rounded-xl p-4">
+          <div class="text-xs uppercase tracking-wider text-slate-500">Emergency contacts</div>
+          <div class="text-sm font-medium text-slate-900 mt-2">{{ patient.emergency_contacts or 'Not set' }}</div>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <a class="minimal-btn minimal-btn-primary" href="{{ url_for('patient.emergency_profile') }}">
+          <span class="iconify" data-icon="solar:pen-new-square-linear"></span>
+          Update emergency profile
+        </a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

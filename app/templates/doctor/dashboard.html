@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1 class="text-xl font-semibold text-slate-900">Doctor Dashboard</h1>
+  <p class="text-sm text-slate-500 mt-1">You can only access patient data when consent is active.</p>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+    <div class="minimal-card p-5">
+      <div class="text-xs uppercase tracking-wider text-slate-500">Active consents</div>
+      <div class="text-2xl font-semibold text-slate-900 mt-2">{{ active_consents }}</div>
+    </div>
+    <div class="minimal-card p-5 md:col-span-2">
+      <div class="flex items-center justify-between">
+        <div class="text-xs uppercase tracking-wider text-slate-500">Upcoming appointments</div>
+        <a class="text-sm text-indigo-600 font-medium" href="{{ url_for('doctor.appointments') }}">View all</a>
+      </div>
+      <div class="mt-3 space-y-2">
+        {% if upcoming|length == 0 %}
+          <div class="text-sm text-slate-500">No upcoming appointments.</div>
+        {% endif %}
+        {% for a in upcoming %}
+          <div class="border border-slate-200 rounded-xl p-3 flex items-center justify-between gap-4">
+            <div>
+              <div class="text-sm font-medium text-slate-900">{{ a.scheduled_at.strftime('%Y-%m-%d %H:%M') }}</div>
+              <div class="text-xs text-slate-500">Patient #{{ a.patient_id }} · Status: {{ a.status }}</div>
+            </div>
+            <a class="minimal-btn admin-btn-soft" href="{{ url_for('doctor.prescribe', appointment_id=a.id) }}">
+              <span class="iconify" data-icon="solar:pill-linear"></span>
+              Prescribe
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

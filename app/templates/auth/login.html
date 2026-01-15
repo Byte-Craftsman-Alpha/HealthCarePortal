@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login — Healthcare Portal</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.15/dist/tailwind.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-6">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center rounded-2xl bg-slate-900 text-white w-14 h-14 shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
+          <span class="iconify" data-icon="solar:health-linear"></span>
+        </div>
+        <div class="mt-4 text-xl font-semibold text-slate-900">Welcome back</div>
+        <div class="text-sm text-slate-500">Secure access to patient-owned health data</div>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-2xl shadow-[0_30px_80px_rgba(15,23,42,0.15),0_2px_10px_rgba(15,23,42,0.06)] p-6">
+        {% if error %}
+          <div class="mb-4 text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl p-3">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" class="space-y-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="email">Email</label>
+            <input class="minimal-input" id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="password">Password</label>
+            <input class="minimal-input" id="password" name="password" type="password" autocomplete="current-password" required />
+          </div>
+
+          <button class="minimal-btn minimal-btn-primary w-full" type="submit">
+            <span class="iconify" data-icon="solar:login-2-linear"></span>
+            Login
+          </button>
+        </form>
+
+        <div class="mt-6 text-sm text-slate-500 text-center">
+          No account?
+          <a class="text-indigo-600 font-medium" href="{{ url_for('auth.register') }}">Create one</a>
+        </div>
+      </div>
+
+      <div class="mt-6 text-center text-xs text-slate-400">
+        Doctor, Admin, Pharmacy, and Emergency users also sign in here.
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="flex items-start justify-between gap-4 flex-wrap">
+    <div>
+      <h1 class="text-xl font-semibold text-slate-900">Patient #{{ patient.user_id }}</h1>
+      <p class="text-sm text-slate-500 mt-1">Consent-based access. Share responsibly.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+    <div class="minimal-card p-6">
+      <h2 class="text-lg font-semibold text-slate-900">Medical records</h2>
+      <div class="mt-4 space-y-3">
+        {% if records|length == 0 %}
+          <div class="text-sm text-slate-500">No records available.</div>
+        {% endif %}
+        {% for r in records %}
+          <div class="border border-slate-200 rounded-2xl p-4 flex items-start justify-between gap-4">
+            <div>
+              <div class="text-sm font-medium text-slate-900">{{ r.description or 'Medical record' }}</div>
+              <div class="text-xs text-slate-500 mt-1">Uploaded {{ r.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</div>
+            </div>
+            <a class="minimal-btn admin-btn-soft" href="{{ url_for('static', filename=r.file_path) }}" target="_blank" rel="noopener">
+              <span class="iconify" data-icon="solar:eye-linear"></span>
+              View
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="minimal-card p-6">
+      <h2 class="text-lg font-semibold text-slate-900">Appointments with you</h2>
+      <div class="mt-4 space-y-3">
+        {% if appointments|length == 0 %}
+          <div class="text-sm text-slate-500">No appointments with this patient.</div>
+        {% endif %}
+        {% for a in appointments %}
+          <div class="border border-slate-200 rounded-2xl p-4 flex items-center justify-between gap-4">
+            <div>
+              <div class="text-sm font-medium text-slate-900">{{ a.scheduled_at.strftime('%Y-%m-%d %H:%M') }}</div>
+              <div class="text-xs text-slate-500 mt-1">Status: {{ a.status }}</div>
+            </div>
+            <a class="minimal-btn minimal-btn-primary" href="{{ url_for('doctor.prescribe', appointment_id=a.id) }}">
+              <span class="iconify" data-icon="solar:pill-linear"></span>
+              Prescribe
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="mt-6 border border-slate-200 rounded-2xl p-5">
+        <div class="text-xs uppercase tracking-wider text-slate-500">Emergency subset</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+          <div class="text-sm text-slate-700">Blood group: <span class="font-medium text-slate-900">{{ patient.blood_group or 'Not set' }}</span></div>
+          <div class="text-sm text-slate-700">Allergies: <span class="font-medium text-slate-900">{{ patient.allergies or 'Not set' }}</span></div>
+          <div class="text-sm text-slate-700">Chronic: <span class="font-medium text-slate-900">{{ patient.chronic_conditions or 'Not set' }}</span></div>
+          <div class="text-sm text-slate-700">Contacts: <span class="font-medium text-slate-900">{{ patient.emergency_contacts or 'Not set' }}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
