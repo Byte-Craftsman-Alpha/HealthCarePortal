@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target Classes - Premium Coaching Institute | Captanganj</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2a2a72',
+                        secondary: '#4a4a9e',
+                        accent: '#ff6b6b',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-in-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'counter': 'countUp 2s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes countUp {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #2a2a72 0%, #4a4a9e 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="scroll-smooth bg-gray-50">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl"></i>
+                    <span class="text-xl font-bold">Target Classes</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="hover:text-yellow-300 transition-colors">Home</a>
+                    <a href="#about" class="hover:text-yellow-300 transition-colors">About</a>
+                    <a href="#courses" class="hover:text-yellow-300 transition-colors">Courses</a>
+                    <a href="#achievements" class="hover:text-yellow-300 transition-colors">Achievements</a>
+                    <a href="#features" class="hover:text-yellow-300 transition-colors">Features</a>
+                    <a href="#contact" class="hover:text-yellow-300 transition-colors">Contact</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-primary bg-opacity-95">
+            <div class="px-6 py-4 space-y-4">
+                <a href="#home" class="block hover:text-yellow-300 transition-colors">Home</a>
+                <a href="#about" class="block hover:text-yellow-300 transition-colors">About</a>
+                <a href="#courses" class="block hover:text-yellow-300 transition-colors">Courses</a>
+                <a href="#achievements" class="block hover:text-yellow-300 transition-colors">Achievements</a>
+                <a href="#features" class="block hover:text-yellow-300 transition-colors">Features</a>
+                <a href="#contact" class="block hover:text-yellow-300 transition-colors">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="gradient-bg text-white pt-32 pb-20">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="animate-fade-in">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                        Welcome to <span class="text-yellow-300">Target Classes</span>
+                    </h1>
+                    <p class="text-xl mb-8 text-gray-200">
+                        Captanganj, Uttar Pradesh में आपका स्वागत है | Premium Coaching Institute for Government Exams
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contact" class="bg-yellow-400 text-primary px-8 py-3 rounded-full font-semibold hover:bg-yellow-300 transition-all transform hover:scale-105">
+                            <i class="fas fa-phone mr-2"></i>Contact Now
+                        </a>
+                        <a href="#courses" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-primary transition-all">
+                            <i class="fas fa-book mr-2"></i>View Courses
+                        </a>
+                    </div>
+                </div>
+                <div class="animate-slide-up">
+                    <div class="glass-effect rounded-2xl p-8">
+                        <i class="fas fa-chalkboard-teacher text-6xl text-yellow-300 mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-4">Expert Faculty</h3>
+                        <p class="text-gray-200">Experienced teachers dedicated to your success in every government exam</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-primary mb-4">About Target Classes</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    A premier coaching institute transforming dreams into reality since our establishment
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl card-hover">
+                    <i class="fas fa-bullseye text-4xl text-primary mb-4"></i>
+                    <h3 class="text-2xl font-bold text-primary mb-4">Our Mission</h3>
+                    <p class="text-gray-700">
+                        To provide quality education and comprehensive guidance to students aspiring for government jobs, making their preparation journey smooth and successful.
+                    </p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl card-hover">
+                    <i class="fas fa-eye text-4xl text-secondary mb-4"></i>
+                    <h3 class="text-2xl font-bold text-secondary mb-4">Our Vision</h3>
+                    <p class="text-gray-700">
+                        To become the most trusted coaching institute in Eastern Uttar Pradesh by producing maximum selections in government examinations every year.
+                    </p>
+                </div>
+                <div class="bg-gradient-to-br from-green-50 to-teal-50 p-8 rounded-2xl card-hover">
+                    <i class="fas fa-map-marker-alt text-4xl text-green-600 mb-4"></i>
+                    <h3 class="text-2xl font-bold text-green-600 mb-4">Our Location</h3>
+                    <p class="text-gray-700">
+                        Conveniently located at kannaudiya field Kaptanganj Road, easily accessible from Captanganj, Pipracih, and surrounding areas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-primary mb-4">Government Exam Courses</h2>
+                <p class="text-xl text-gray-600">Comprehensive preparation for all major government examinations</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-xl shadow-lg card-hover border-t-4 border-red-500">
+                    <div class="text-red-500 text-3xl mb-4">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">SSC Exams</h3>
+                    <p class="text-gray-600 text-sm mb-4">CGL, CHSL, GD, MTS complete preparation</p>
+                    <div class="text-2xl font-bold text-green-600">₹15,000</div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg card-hover border-t-4 border-blue-500">
+                    <div class="text-blue-500 text-3xl mb-4">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">UPSC & PCS</h3>
+                    <p class="text-gray-600 text-sm mb-4">IAS, PCS Foundation course</p>
+                    <div class="text-2xl font-bold text-green-600">₹15,000</div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg card-hover border-t-4 border-purple-500">
+                    <div class="text-purple-500 text-3xl mb-4">
+                        <i class="fas fa-train"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Railway Exams</h3>
+                    <p class="text-gray-600 text-sm mb-4">RRB NTPC, Group D preparation</p>
+                    <div class="text-2xl font-bold text-green-600">₹15,000</div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg card-hover border-t-4 border-green-500">
+                    <div class="text-green-500 text-3xl mb-4">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Police Exams</h3>
+                    <p class="text-gray-600 text-sm mb-4">UP Police, SI, Constable</p>
+                    <div class="text-2xl font-bold text-green-600">₹15,000</div>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg card-hover border-t-4 border-yellow-500">
+                    <div class="text-yellow-500 text-3xl mb-4">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Banking Exams</h3>
+                    <p class="text-gray-600 text-sm mb-4">IBPS, SBI PO/Clerk preparation</p>
+                    <div class="text-2xl font-bold text-green-600">₹15,000</div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg card-hover border-t-4 border-indigo-500">
+                    <div class="text-indigo-500 text-3xl mb-4">
+                        <i class="fas fa-chalkboard"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">TET/CTET</h3>
+                    <p class="text-gray-600 text-sm mb-4">Teacher Eligibility Tests</p>
+                    <div class="text-2xl font-bold text-green-600">₹15,000</div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg card-hover border-t-4 border-pink-500">
+                    <div class="text-pink-500 text-3xl mb-4">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Lekhpal/VDO</h3>
+                    <p class="text-gray-600 text-sm mb-4">State level examination prep</p>
+                    <div class="text-2xl font-bold text-green-600">₹15,000</div>
+                </div>
+                <div class="bg-gradient-to-br from-primary to-secondary text-white p-6 rounded-xl shadow-lg card-hover">
+                    <div class="text-yellow-300 text-3xl mb-4">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">All State Exams</h3>
+                    <p class="text-gray-100 text-sm mb-4">Complete state level exam preparation</p>
+                    <div class="text-2xl font-bold text-yellow-300">₹15,000</div>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <div class="bg-gradient-to-r from-yellow-400 to-orange-400 text-white p-6 rounded-2xl inline-block">
+                    <p class="text-2xl font-bold mb-2">💰 Special Offer: Only ₹15,000 for Complete Course</p>
+                    <p class="text-lg">✨ Admission Open | Limited Seats Available</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements" class="py-20 gradient-bg text-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Our Achievements</h2>
+                <p class="text-xl text-gray-200">Numbers that speak about our success story</p>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center glass-effect p-8 rounded-2xl">
+                    <div class="text-5xl font-bold text-yellow-300 mb-2 counter" data-target="1500">0</div>
+                    <div class="text-xl">Students Enrolled</div>
+                </div>
+                <div class="text-center glass-effect p-8 rounded-2xl">
+                    <div class="text-5xl font-bold text-yellow-300 mb-2 counter" data-target="85">0</div>
+                    <div class="text-xl">Success Rate %</div>
+                </div>
+                <div class="text-center glass-effect p-8 rounded-2xl">
+                    <div class="text-5xl font-bold text-yellow-300 mb-2 counter" data-target="25">0</div>
+                    <div class="text-xl">Expert Faculty</div>
+                </div>
+                <div class="text-center glass-effect p-8 rounded-2xl">
+                    <div class="text-5xl font-bold text-yellow-300 mb-2 counter" data-target="5">0</div>
+                    <div class="text-xl">Years Experience</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-primary mb-4">Why Choose Target Classes?</h2>
+                <p class="text-xl text-gray-600">Platform features designed for your success</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-white card-hover">
+                    <div class="bg-primary text-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-users text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary mb-4">Expert Faculty</h3>
+                    <p class="text-gray-700">Highly experienced and dedicated teachers with proven track record in government exam coaching</p>
+                </div>
+                <div class="text-center p-8 rounded-2xl bg-gradient-to-br from-purple-50 to-white card-hover">
+                    <div class="bg-secondary text-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-book-open text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-secondary mb-4">Complete Syllabus</h3>
+                    <p class="text-gray-700">Comprehensive coverage of entire syllabus with detailed study material and practice resources</p>
+                </div>
+                <div class="text-center p-8 rounded-2xl bg-gradient-to-br from-green-50 to-white card-hover">
+                    <div class="bg-green-600 text-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-chart-line text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-green-600 mb-4">Regular Test Series</h3>
+                    <p class="text-gray-700">Weekly mock tests and performance analysis to track your progress and identify improvement areas</p>
+                </div>
+                <div class="text-center p-8 rounded-2xl bg-gradient-to-br from-yellow-50 to-white card-hover">
+                    <div class="bg-yellow-500 text-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-rupee-sign text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-yellow-600 mb-4">Affordable Fees</h3>
+                    <p class="text-gray-700">Quality education at just ₹15,000 with no hidden charges and flexible payment options</p>
+                </div>
+                <div class="text-center p-8 rounded-2xl bg-gradient-to-br from-red-50 to-white card-hover">
+                    <div class="bg-red-500 text-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-headset text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-red-600 mb-4">24/7 Support</h3>
+                    <p class="text-gray-700">Round the clock doubt clearing and mentorship support through multiple channels</p>
+                </div>
+                <div class="text-center p-8 rounded-2xl bg-gradient-to-br from-indigo-50 to-white card-hover">
+                    <div class="bg-indigo-600 text-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-trophy text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-indigo-600 mb-4">Proven Results</h3>
+                    <p class="text-gray-700">Consistent track record of selections in SSC, Railway, Banking and other government exams</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-primary mb-4">Get In Touch</h2>
+                <p class="text-xl text-gray-600">Start your journey towards government job success today</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-primary mb-6">Contact Information</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-primary text-white p-3 rounded-full">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Call Us</h4>
+                                <p class="text-gray-600">
+                                    <a href="tel:7054999366" class="hover:text-primary">7054999366</a><br>
+                                    <a href="tel:7355307719" class="hover:text-primary">7355307719</a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-green-600 text-white p-3 rounded-full">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">WhatsApp</h4>
+                                <p class="text-gray-600">
+                                    <a href="https://wa.me/917054999366" target="_blank" class="hover:text-green-600">Message 7054999366</a><br>
+                                    <a href="https://wa.me/917355307719" target="_blank" class="hover:text-green-600">Message 7355307719</a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-red-600 text-white p-3 rounded-full">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Address</h4>
+                                <p class="text-gray-600">
+                                    kannaudiya field<br>
+                                    Kaptanganj Road, Near Captanganj<br>
+                                    Uttar Pradesh
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-blue-600 text-white p-3 rounded-full">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Timings</h4>
+                                <p class="text-gray-600">
+                                    Monday - Saturday: 7:00 AM - 8:00 PM<br>
+                                    Sunday: 9:00 AM - 2:00 PM
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                        <p class="text-sm text-gray-700">
+                            <strong>💡 Quick Tip:</strong> Call or WhatsApp us for free career counseling and demo classes!
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-primary mb-6">Send Us a Message</h3>
+                    <form id="contact-form">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-semibold mb-2">Full Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-semibold mb-2">Phone Number</label>
+                            <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-semibold mb-2">Course Interested</label>
+                            <select id="course" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary" required>
+                                <option value="">Select a course</option>
+                                <option value="SSC">SSC (CGL, CHSL, GD, MTS)</option>
+                                <option value="UPSC">UPSC (IAS, PCS)</option>
+                                <option value="Railway">Railway (RRB NTPC, Group D)</option>
+                                <option value="Police">Police (UP Police, SI, Constable)</option>
+                                <option value="Banking">Banking (IBPS, SBI)</option>
+                                <option value="TET">TET/CTET/Super TET</option>
+                                <option value="Lekhpal">Lekhpal/VDO</option>
+                                <option value="Other">Other State Exams</option>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-semibold mb-2">Message</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary" placeholder="Tell us about your requirements..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-secondary transition-all transform hover:scale-105">
+                            <i class="fas fa-paper-plane mr-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <!-- Map Section -->
+            <div class="mt-12">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-primary mb-6 text-center">Find Us on Map</h3>
+                    <div class="rounded-xl overflow-hidden shadow-lg">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14402.123456789012!2d82.57000000000002!3d26.910000000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3993fbd7ba669077%3A0x1b46cdd8fb7193f1!2sTarget%20Classes%2C%20Captanganj!5e0!3m2!1sen!2sin!4v1700000000000"
+                            width="100%"
+                            height="450"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            class="rounded-xl">
+                        </iframe>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="https://maps.app.goo.gl/AeCCxcztczABQ4Pu5" target="_blank" class="text-primary hover:text-secondary font-semibold">
+                            <i class="fas fa-external-link-alt mr-2"></i>Open in Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                        <span class="text-xl font-bold">Target Classes</span>
+                    </div>
+                    <p class="text-gray-300">
+                        Premium coaching institute for government exam preparation in Captanganj, Uttar Pradesh.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-300 hover:text-yellow-300 transition-colors">Home</a></li>
+                        <li><a href="#about" class="text-gray-300 hover:text-yellow-300 transition-colors">About Us</a></li>
+                        <li><a href="#courses" class="text-gray-300 hover:text-yellow-300 transition-colors">Courses</a></li>
+                        <li><a href="#features" class="text-gray-300 hover:text-yellow-300 transition-colors">Features</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Courses</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#courses" class="text-gray-300 hover:text-yellow-300 transition-colors">SSC Exams</a></li>
+                        <li><a href="#courses" class="text-gray-300 hover:text-yellow-300 transition-colors">Railway Exams</a></li>
+                        <li><a href="#courses" class="text-gray-300 hover:text-yellow-300 transition-colors">Banking Exams</a></li>
+                        <li><a href="#courses" class="text-gray-300 hover:text-yellow-300 transition-colors">Police Exams</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-phone text-sm"></i>
+                            <span>7054999366</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-phone text-sm"></i>
+                            <span>7355307719</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fas fa-map-marker-alt text-sm mt-1"></i>
+                            <span>kannaudiya field, Kaptanganj Road</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-600 mt-8 pt-8 text-center">
+                <p class="text-gray-300">
+                    © 2026 Target Classes, Captanganj — All Rights Reserved. | 
+                    <span class="text-yellow-300">Designed with <i class="fas fa-heart"></i> for Student Success</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/917054999366" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all transform hover:scale-110 z-50">
+        <i class="fab fa-whatsapp text-2xl"></i>
+    </a>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking on a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Counter animation
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+
+        const countUp = () => {
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const increment = target / speed;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + increment);
+                    setTimeout(countUp, 10);
+                } else {
+                    counter.innerText = target;
+                }
+            });
+        };
+
+        // Intersection Observer for counter animation
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    countUp();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const achievementsSection = document.getElementById('achievements');
+        if (achievementsSection) {
+            observer.observe(achievementsSection);
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Form submission
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const course = document.getElementById('course').value;
+            const message = document.getElementById('message').value;
+
+            // Create WhatsApp message
+            const whatsappMessage = `Hello Target Classes,%0A%0AName: ${name}%0APhone: ${phone}%0ACourse: ${course}%0AMessage: ${message}%0A%0APlease contact me regarding admission.`;
+            
+            // Open WhatsApp
+            window.open(`https://wa.me/917054999366?text=${whatsappMessage}`, '_blank');
+            
+            // Reset form
+            contactForm.reset();
+        });
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-xl');
+            } else {
+                nav.classList.remove('shadow-xl');
+            }
+        });
+
+        // Animate elements on scroll
+        const animateOnScroll = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            animateOnScroll.observe(section);
+        });
+    </script>
+
+</body>
+</html>

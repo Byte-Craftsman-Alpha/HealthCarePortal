@@ -49,6 +49,8 @@ def login():
 def register():
     if request.method == "POST":
         email = (request.form.get("email") or "").strip().lower()
+        name = (request.form.get("name") or "").strip() or None
+        phone = (request.form.get("phone") or "").strip() or None
         password = request.form.get("password") or ""
         role = (request.form.get("role") or "patient").strip().lower()
 
@@ -59,7 +61,7 @@ def register():
         if existing:
             return render_template("auth/register.html", error="Email already registered")
 
-        user = User(email=email, role=role)
+        user = User(email=email, role=role, name=name, phone=phone)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()

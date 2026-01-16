@@ -2,14 +2,16 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from flask import abort, redirect, render_template, request, url_for
+import os
+
+from flask import abort, current_app, redirect, render_template, request, url_for
 from flask_login import current_user
 
 from app.blueprints.doctor import doctor_bp
 from app.blueprints.rbac import doctor_consent_required, roles_required
 from app.extensions import db
 from app.models import Appointment, Consent, MedicalRecord, Patient, Prescription
-from app.utils.audit import log_action
+from app.utils.audit import log_action, log_event
 
 
 @doctor_bp.get("/dashboard")
@@ -49,6 +51,10 @@ def patients():
 @doctor_consent_required("patient_id")
 def patient_detail(patient_id: int):
     patient = Patient.query.get_or_404(patient_id)
+
+    consent = Consent.query.filter_by(patient_id=patient.user_id, doctor_id=current_user.id).first()
+    can_add_record = bool(consent and consent.is_active and getattr(consent, "can_add_record", False))
+
     records = (
         MedicalRecord.query.filter_by(patient_id=patient.user_id)
         .order_by(MedicalRecord.uploaded_at.desc())
@@ -59,7 +65,72 @@ def patient_detail(patient_id: int):
         .order_by(Appointment.scheduled_at.desc())
         .all()
     )
-    return render_template("doctor/patient_detail.html", patient=patient, records=records, appointments=appts)
+    log_event("doctor_view_patient", "patient", patient_id=patient.user_id, doctor_id=current_user.id, entity_id=patient.user_id)
+    return render_template(
+        "doctor/patient_detail.html",
+        patient=patient,
+        records=records,
+        appointments=appts,
+        can_add_record=can_add_record,
+    )
+
+
+@doctor_bp.post("/patients/<int:patient_id>/records")
+@doctor_consent_required("patient_id")
+def add_record(patient_id: int):
+    patient = Patient.query.get_or_404(patient_id)
+
+    consent = Consent.query.filter_by(patient_id=patient.user_id, doctor_id=current_user.id).first()
+    if consent is None or not consent.is_active or not getattr(consent, "can_add_record", False):
+        abort(403)
+
+    f = request.files.get("file")
+    description = (request.form.get("description") or "").strip() or None
+    appointment_id_raw = (request.form.get("appointment_id") or "").strip()
+
+    if not f or not f.filename:
+        abort(400)
+
+    appointment_id = None
+    if appointment_id_raw and appointment_id_raw.isdigit():
+        appointment_id = int(appointment_id_raw)
+        owned = Appointment.query.filter_by(id=appointment_id, patient_id=patient.user_id, doctor_id=current_user.id).first()
+        if owned is None:
+            appointment_id = None
+
+    upload_root = current_app.config.get("UPLOAD_FOLDER", os.path.join(current_app.root_path, "static", "uploads"))
+    os.makedirs(upload_root, exist_ok=True)
+
+    safe_name = f"doc_{current_user.id}_patient_{patient.user_id}_{int(datetime.utcnow().timestamp())}_{os.path.basename(f.filename)}"
+    rel_path = os.path.join("uploads", safe_name)
+    abs_path = os.path.join(current_app.root_path, "static", rel_path)
+    f.save(abs_path)
+
+    rec = MedicalRecord(
+        patient_id=patient.user_id,
+        file_path=rel_path,
+        description=description,
+        appointment_id=appointment_id,
+        created_by_user_id=current_user.id,
+    )
+    db.session.add(rec)
+    db.session.commit()
+
+    log_action("doctor_add_medical_record", "medical_record")
+    log_event("record_added_by_doctor", "medical_record", patient_id=patient.user_id, doctor_id=current_user.id, entity_id=rec.id)
+    return redirect(url_for("doctor.patient_detail", patient_id=patient.user_id))
+
+
+@doctor_bp.get("/records/<int:record_id>/view")
+@roles_required("doctor")
+def record_view(record_id: int):
+    rec = MedicalRecord.query.get_or_404(record_id)
+    consent = Consent.query.filter_by(patient_id=rec.patient_id, doctor_id=current_user.id).first()
+    if consent is None or not consent.is_active or not getattr(consent, "can_view_history", True):
+        abort(403)
+
+    log_event("doctor_view_record", "medical_record", patient_id=rec.patient_id, doctor_id=current_user.id, entity_id=rec.id)
+    return redirect(url_for("static", filename=rec.file_path))
 
 
 @doctor_bp.route("/appointments/<int:appointment_id>/prescribe", methods=["GET", "POST"])

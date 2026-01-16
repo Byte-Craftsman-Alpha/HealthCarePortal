@@ -26,6 +26,9 @@ class Consent(db.Model):
     granted_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     revoked_at = db.Column(db.DateTime, nullable=True)
 
+    can_view_history = db.Column(db.Boolean, nullable=False, default=True)
+    can_add_record = db.Column(db.Boolean, nullable=False, default=False)
+
     patient = db.relationship("Patient", back_populates="consents")
     doctor = db.relationship("Doctor", back_populates="consents")
 

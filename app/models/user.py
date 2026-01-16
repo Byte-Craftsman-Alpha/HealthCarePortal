@@ -13,6 +13,8 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, index=True, nullable=False)
+    name = db.Column(db.String(128), nullable=True)
+    phone = db.Column(db.String(32), nullable=True)
     password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(32), index=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)

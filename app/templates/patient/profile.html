@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="flex items-start justify-between gap-4 flex-wrap">
+    <div>
+      <h1 class="text-xl font-semibold" style="color: var(--text-primary);">Profile</h1>
+      <p class="text-sm mt-1" style="color: var(--text-muted);">Manage your personal profile and emergency details.</p>
+    </div>
+  </div>
+
+  <div class="minimal-card p-6 mt-6 max-w-4xl">
+    <form method="post" class="space-y-6">
+      <div>
+        <div class="text-sm font-semibold" style="color: var(--text-primary);">Personal details</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="name">Full name</label>
+            <input class="minimal-input" id="name" name="name" type="text" value="{{ current_user.name or '' }}" placeholder="Your name" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="phone">Phone</label>
+            <input class="minimal-input" id="phone" name="phone" type="tel" value="{{ current_user.phone or '' }}" placeholder="+91..." />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="dob">Date of birth</label>
+            <input class="minimal-input" id="dob" name="dob" type="text" value="{{ patient.dob or '' }}" placeholder="YYYY-MM-DD" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="gender">Gender</label>
+            <input class="minimal-input" id="gender" name="gender" type="text" value="{{ patient.gender or '' }}" placeholder="e.g., Female" />
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-secondary);" class="pt-6">
+        <div class="text-sm font-semibold" style="color: var(--text-primary);">Emergency details</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="blood_group">Blood group</label>
+            <input class="minimal-input" id="blood_group" name="blood_group" type="text" value="{{ patient.blood_group or '' }}" placeholder="e.g., O+" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="allergies">Allergies</label>
+            <input class="minimal-input" id="allergies" name="allergies" type="text" value="{{ patient.allergies or '' }}" placeholder="e.g., Penicillin" />
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="chronic_conditions">Chronic conditions</label>
+          <input class="minimal-input" id="chronic_conditions" name="chronic_conditions" type="text" value="{{ patient.chronic_conditions or '' }}" placeholder="e.g., Asthma" />
+        </div>
+
+        <div class="mt-4">
+          <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="emergency_contacts">Emergency contacts</label>
+          <input class="minimal-input" id="emergency_contacts" name="emergency_contacts" type="text" value="{{ patient.emergency_contacts or '' }}" placeholder="Name, relation, phone" />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button class="minimal-btn minimal-btn-primary" type="submit">
+          <span class="iconify" data-icon="solar:diskette-linear"></span>
+          Save changes
+        </button>
+        <a class="portal-btn-soft" href="{{ url_for('patient.emergency_profile') }}">
+          <span class="iconify" data-icon="solar:heart-pulse-linear"></span>
+          Emergency-only page
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

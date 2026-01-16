@@ -11,7 +11,7 @@
           <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="doctor_id">Doctor</label>
           <select class="minimal-input" id="doctor_id" name="doctor_id" required>
             {% for d in doctors %}
-              <option value="{{ d.user_id }}">Doctor #{{ d.user_id }} · {{ d.specialization }}</option>
+              <option value="{{ d.user_id }}" {% if selected_doctor_id and selected_doctor_id == d.user_id %}selected{% endif %}>{{ d.user.name or ('Doctor #' ~ d.user_id) }} · {{ d.specialization }}</option>
             {% endfor %}
           </select>
         </div>

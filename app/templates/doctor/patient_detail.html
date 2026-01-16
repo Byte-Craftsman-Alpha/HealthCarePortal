@@ -2,25 +2,68 @@
 {% block content %}
   <div class="flex items-start justify-between gap-4 flex-wrap">
     <div>
-      <h1 class="text-xl font-semibold text-slate-900">Patient #{{ patient.user_id }}</h1>
-      <p class="text-sm text-slate-500 mt-1">Consent-based access. Share responsibly.</p>
+      <h1 class="text-xl font-semibold" style="color: var(--text-primary);">Patient #{{ patient.user_id }}</h1>
+      <p class="text-sm mt-1" style="color: var(--text-muted);">Consent-based access. Share responsibly.</p>
     </div>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
     <div class="minimal-card p-6">
-      <h2 class="text-lg font-semibold text-slate-900">Medical records</h2>
+      <div class="flex items-start justify-between gap-4 flex-wrap">
+        <h2 class="text-lg font-semibold" style="color: var(--text-primary);">Medical records</h2>
+        {% if can_add_record %}
+          <span class="text-xs" style="color: var(--text-muted);">Doctor upload permitted</span>
+        {% else %}
+          <span class="text-xs" style="color: var(--text-muted);">Doctor upload not permitted</span>
+        {% endif %}
+      </div>
+
+      {% if can_add_record %}
+        <form method="post" action="{{ url_for('doctor.add_record', patient_id=patient.user_id) }}" enctype="multipart/form-data" class="mt-4 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="file">File</label>
+              <input class="minimal-input" id="file" name="file" type="file" required />
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="appointment_id">Link to appointment (optional)</label>
+              <select class="minimal-input" id="appointment_id" name="appointment_id">
+                <option value="">Not linked</option>
+                {% for a in appointments %}
+                  <option value="{{ a.id }}">#{{ a.id }} · {{ a.scheduled_at.strftime('%Y-%m-%d') }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="description">Description</label>
+            <input class="minimal-input" id="description" name="description" type="text" placeholder="e.g., Diagnosis report, test results" />
+          </div>
+
+          <button class="minimal-btn minimal-btn-primary" type="submit">
+            <span class="iconify" data-icon="solar:upload-linear"></span>
+            Upload record
+          </button>
+        </form>
+
+        <div class="mt-6" style="border-top: 1px solid var(--border-secondary);"></div>
+      {% endif %}
+
       <div class="mt-4 space-y-3">
         {% if records|length == 0 %}
-          <div class="text-sm text-slate-500">No records available.</div>
+          <div class="text-sm" style="color: var(--text-muted);">No records available.</div>
         {% endif %}
         {% for r in records %}
-          <div class="border border-slate-200 rounded-2xl p-4 flex items-start justify-between gap-4">
+          <div class="rounded-2xl p-4 flex items-start justify-between gap-4" style="border: 1px solid var(--border-secondary);">
             <div>
-              <div class="text-sm font-medium text-slate-900">{{ r.description or 'Medical record' }}</div>
-              <div class="text-xs text-slate-500 mt-1">Uploaded {{ r.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</div>
+              <div class="text-sm font-medium" style="color: var(--text-primary);">{{ r.description or 'Medical record' }}</div>
+              <div class="text-xs mt-1" style="color: var(--text-muted);">Uploaded {{ r.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</div>
+              {% if r.appointment_id %}
+                <div class="text-xs mt-1" style="color: var(--text-muted);">Linked appointment: #{{ r.appointment_id }}</div>
+              {% endif %}
             </div>
-            <a class="minimal-btn admin-btn-soft" href="{{ url_for('static', filename=r.file_path) }}" target="_blank" rel="noopener">
+            <a class="portal-btn-soft" href="{{ url_for('doctor.record_view', record_id=r.id) }}" target="_blank" rel="noopener">
               <span class="iconify" data-icon="solar:eye-linear"></span>
               View
             </a>
@@ -30,16 +73,16 @@
     </div>
 
     <div class="minimal-card p-6">
-      <h2 class="text-lg font-semibold text-slate-900">Appointments with you</h2>
+      <h2 class="text-lg font-semibold" style="color: var(--text-primary);">Appointments with you</h2>
       <div class="mt-4 space-y-3">
         {% if appointments|length == 0 %}
-          <div class="text-sm text-slate-500">No appointments with this patient.</div>
+          <div class="text-sm" style="color: var(--text-muted);">No appointments with this patient.</div>
         {% endif %}
         {% for a in appointments %}
-          <div class="border border-slate-200 rounded-2xl p-4 flex items-center justify-between gap-4">
+          <div class="rounded-2xl p-4 flex items-center justify-between gap-4" style="border: 1px solid var(--border-secondary);">
             <div>
-              <div class="text-sm font-medium text-slate-900">{{ a.scheduled_at.strftime('%Y-%m-%d %H:%M') }}</div>
-              <div class="text-xs text-slate-500 mt-1">Status: {{ a.status }}</div>
+              <div class="text-sm font-medium" style="color: var(--text-primary);">{{ a.scheduled_at.strftime('%Y-%m-%d %H:%M') }}</div>
+              <div class="text-xs mt-1" style="color: var(--text-muted);">Status: {{ a.status }}</div>
             </div>
             <a class="minimal-btn minimal-btn-primary" href="{{ url_for('doctor.prescribe', appointment_id=a.id) }}">
               <span class="iconify" data-icon="solar:pill-linear"></span>
@@ -49,13 +92,13 @@
         {% endfor %}
       </div>
 
-      <div class="mt-6 border border-slate-200 rounded-2xl p-5">
-        <div class="text-xs uppercase tracking-wider text-slate-500">Emergency subset</div>
+      <div class="mt-6 rounded-2xl p-5" style="border: 1px solid var(--border-secondary);">
+        <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Emergency subset</div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-          <div class="text-sm text-slate-700">Blood group: <span class="font-medium text-slate-900">{{ patient.blood_group or 'Not set' }}</span></div>
-          <div class="text-sm text-slate-700">Allergies: <span class="font-medium text-slate-900">{{ patient.allergies or 'Not set' }}</span></div>
-          <div class="text-sm text-slate-700">Chronic: <span class="font-medium text-slate-900">{{ patient.chronic_conditions or 'Not set' }}</span></div>
-          <div class="text-sm text-slate-700">Contacts: <span class="font-medium text-slate-900">{{ patient.emergency_contacts or 'Not set' }}</span></div>
+          <div class="text-sm" style="color: var(--text-secondary);">Blood group: <span class="font-medium" style="color: var(--text-primary);">{{ patient.blood_group or 'Not set' }}</span></div>
+          <div class="text-sm" style="color: var(--text-secondary);">Allergies: <span class="font-medium" style="color: var(--text-primary);">{{ patient.allergies or 'Not set' }}</span></div>
+          <div class="text-sm" style="color: var(--text-secondary);">Chronic: <span class="font-medium" style="color: var(--text-primary);">{{ patient.chronic_conditions or 'Not set' }}</span></div>
+          <div class="text-sm" style="color: var(--text-secondary);">Contacts: <span class="font-medium" style="color: var(--text-primary);">{{ patient.emergency_contacts or 'Not set' }}</span></div>
         </div>
       </div>
     </div>

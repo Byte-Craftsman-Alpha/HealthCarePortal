@@ -55,9 +55,25 @@
                   <span class="iconify" data-icon="solar:widget-2-linear"></span>
                   <span class="text-sm font-medium">Dashboard</span>
                 </a>
+                <a class="minimal-nav-item {% if request.endpoint == 'patient.profile' %}active{% endif %}" href="{{ url_for('patient.profile') }}">
+                  <span class="iconify" data-icon="solar:user-rounded-linear"></span>
+                  <span class="text-sm font-medium">Profile</span>
+                </a>
+                <a class="minimal-nav-item {% if request.endpoint in ['patient.doctors', 'patient.doctor_detail'] %}active{% endif %}" href="{{ url_for('patient.doctors') }}">
+                  <span class="iconify" data-icon="solar:stethoscope-linear"></span>
+                  <span class="text-sm font-medium">Doctors</span>
+                </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'patient.records' %}active{% endif %}" href="{{ url_for('patient.records') }}">
                   <span class="iconify" data-icon="solar:document-add-linear"></span>
                   <span class="text-sm font-medium">Records</span>
+                </a>
+                <a class="minimal-nav-item {% if request.endpoint == 'patient.history' %}active{% endif %}" href="{{ url_for('patient.history') }}">
+                  <span class="iconify" data-icon="solar:clock-circle-linear"></span>
+                  <span class="text-sm font-medium">History</span>
+                </a>
+                <a class="minimal-nav-item {% if request.endpoint == 'patient.activity' %}active{% endif %}" href="{{ url_for('patient.activity') }}">
+                  <span class="iconify" data-icon="solar:route-linear"></span>
+                  <span class="text-sm font-medium">Activity</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'patient.appointments' %}active{% endif %}" href="{{ url_for('patient.appointments') }}">
                   <span class="iconify" data-icon="solar:calendar-mark-linear"></span>
@@ -135,7 +151,11 @@
             <nav class="mt-4 space-y-2 flex-1 overflow-auto">
               {% if role == 'patient' %}
                 <a class="minimal-nav-item" href="{{ url_for('patient.dashboard') }}"> <span class="iconify" data-icon="solar:widget-2-linear"></span> <span class="text-sm font-medium">Dashboard</span></a>
+                <a class="minimal-nav-item" href="{{ url_for('patient.profile') }}"> <span class="iconify" data-icon="solar:user-rounded-linear"></span> <span class="text-sm font-medium">Profile</span></a>
+                <a class="minimal-nav-item" href="{{ url_for('patient.doctors') }}"> <span class="iconify" data-icon="solar:stethoscope-linear"></span> <span class="text-sm font-medium">Doctors</span></a>
                 <a class="minimal-nav-item" href="{{ url_for('patient.records') }}"> <span class="iconify" data-icon="solar:document-add-linear"></span> <span class="text-sm font-medium">Records</span></a>
+                <a class="minimal-nav-item" href="{{ url_for('patient.history') }}"> <span class="iconify" data-icon="solar:clock-circle-linear"></span> <span class="text-sm font-medium">History</span></a>
+                <a class="minimal-nav-item" href="{{ url_for('patient.activity') }}"> <span class="iconify" data-icon="solar:route-linear"></span> <span class="text-sm font-medium">Activity</span></a>
                 <a class="minimal-nav-item" href="{{ url_for('patient.appointments') }}"> <span class="iconify" data-icon="solar:calendar-mark-linear"></span> <span class="text-sm font-medium">Appointments</span></a>
                 <a class="minimal-nav-item" href="{{ url_for('patient.consents') }}"> <span class="iconify" data-icon="solar:shield-check-linear"></span> <span class="text-sm font-medium">Consents</span></a>
                 <a class="minimal-nav-item" href="{{ url_for('patient.prescriptions') }}"> <span class="iconify" data-icon="solar:pill-linear"></span> <span class="text-sm font-medium">Prescriptions</span></a>

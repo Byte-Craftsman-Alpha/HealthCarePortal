@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="flex items-start justify-between gap-4 flex-wrap">
+    <div>
+      <h1 class="text-xl font-semibold" style="color: var(--text-primary);">Doctors</h1>
+      <p class="text-sm mt-1" style="color: var(--text-muted);">Browse doctors, view profiles, and share feedback.</p>
+    </div>
+  </div>
+
+  <div class="minimal-card p-6 mt-6">
+    <form method="get" class="flex items-center gap-3 flex-wrap">
+      <div class="flex-1 min-w-[220px]">
+        <input class="minimal-input" name="q" type="text" value="{{ q or '' }}" placeholder="Search by name, specialization, hospital..." />
+      </div>
+      <button class="portal-btn-soft" type="submit">
+        <span class="iconify" data-icon="solar:magnifer-linear"></span>
+        Search
+      </button>
+      {% if q %}
+        <a class="portal-btn-soft" href="{{ url_for('patient.doctors') }}">
+          <span class="iconify" data-icon="solar:restart-linear"></span>
+          Reset
+        </a>
+      {% endif %}
+    </form>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
+      {% for d in doctors %}
+        <div class="rounded-2xl p-5" style="border: 1px solid var(--border-secondary);">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <div class="text-sm font-semibold" style="color: var(--text-primary);">{{ d.user.name or ('Doctor #' ~ d.user_id) }}</div>
+              <div class="text-sm mt-1" style="color: var(--text-muted);">{{ d.specialization }}</div>
+              <div class="text-xs mt-2" style="color: var(--text-muted);">Hospital: {{ d.hospital_id or 'N/A' }}</div>
+              <div class="text-xs mt-2" style="color: var(--text-muted);">Email: {{ d.user.email }}</div>
+              {% if d.user.phone %}
+                <div class="text-xs mt-1" style="color: var(--text-muted);">Phone: {{ d.user.phone }}</div>
+              {% endif %}
+            </div>
+            <a class="portal-btn-soft" href="{{ url_for('patient.doctor_detail', doctor_id=d.user_id) }}">
+              <span class="iconify" data-icon="solar:arrow-right-linear"></span>
+              View
+            </a>
+          </div>
+
+          <div class="mt-4 flex items-center gap-2 flex-wrap">
+            <a class="minimal-btn minimal-btn-primary" href="{{ url_for('patient.appointments', doctor_id=d.user_id) }}">
+              <span class="iconify" data-icon="solar:calendar-add-linear"></span>
+              Book
+            </a>
+            <a class="portal-btn-soft" href="{{ url_for('patient.consents') }}">
+              <span class="iconify" data-icon="solar:shield-check-linear"></span>
+              Consent
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+
+      {% if doctors|length == 0 %}
+        <div class="text-sm" style="color: var(--text-muted);">No doctors found.</div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
