@@ -8,20 +8,22 @@ class Doctor(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
 
+    organization_id = db.Column(
+        db.Integer,
+        db.ForeignKey("organizations.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+
     specialization = db.Column(db.String(128), nullable=False)
     hospital_id = db.Column(db.String(64), nullable=True, index=True)
 
     user = db.relationship("User", back_populates="doctor")
 
+    organization = db.relationship("Organization", back_populates="doctors")
+
     appointments = db.relationship(
         "Appointment",
-        back_populates="doctor",
-        cascade="all, delete-orphan",
-        passive_deletes=True,
-    )
-
-    consents = db.relationship(
-        "Consent",
         back_populates="doctor",
         cascade="all, delete-orphan",
         passive_deletes=True,

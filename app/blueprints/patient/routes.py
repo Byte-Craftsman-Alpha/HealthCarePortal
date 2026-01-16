@@ -10,7 +10,7 @@ from sqlalchemy import or_
 from app.blueprints.patient import patient_bp
 from app.blueprints.rbac import roles_required
 from app.extensions import db
-from app.models import Appointment, AuditEvent, Consent, Doctor, DoctorFeedback, MedicalRecord, Patient, Prescription, User
+from app.models import Appointment, AuditEvent, Consent, Doctor, DoctorFeedback, MedicalRecord, Organization, Patient, Prescription, User
 from app.utils.audit import log_action, log_event
 
 
@@ -143,7 +143,15 @@ def appointments():
                 error="Invalid date/time.",
             )
 
-        appt = Appointment(patient_id=current_user.id, doctor_id=doctor_id, scheduled_at=scheduled_at, status="scheduled")
+        doctor = Doctor.query.get(doctor_id)
+        org_id = getattr(doctor, "organization_id", None) if doctor else None
+        appt = Appointment(
+            patient_id=current_user.id,
+            doctor_id=doctor_id,
+            organization_id=org_id,
+            scheduled_at=scheduled_at,
+            status="scheduled",
+        )
         db.session.add(appt)
         db.session.commit()
         log_action("book_appointment", "appointment")
@@ -170,16 +178,16 @@ def _patient_appointments():
 @patient_bp.route("/consents", methods=["GET", "POST"])
 @roles_required("patient")
 def consents():
-    doctors = Doctor.query.all()
+    organizations = Organization.query.order_by(Organization.name.asc()).all()
 
     if request.method == "POST":
-        doctor_id = int(request.form.get("doctor_id") or "0")
+        organization_id = int(request.form.get("organization_id") or "0")
         action = (request.form.get("action") or "grant").strip()
 
         can_view_history = (request.form.get("can_view_history") or "").strip().lower() in {"1", "true", "on", "yes"}
         can_add_record = (request.form.get("can_add_record") or "").strip().lower() in {"1", "true", "on", "yes"}
 
-        consent = Consent.query.filter_by(patient_id=current_user.id, doctor_id=doctor_id).first()
+        consent = Consent.query.filter_by(patient_id=current_user.id, organization_id=organization_id).first()
 
         if action == "revoke":
             if consent and consent.revoked_at is None:
@@ -189,7 +197,7 @@ def consents():
             return redirect(url_for("patient.consents"))
 
         if consent is None:
-            consent = Consent(patient_id=current_user.id, doctor_id=doctor_id)
+            consent = Consent(patient_id=current_user.id, organization_id=organization_id)
             db.session.add(consent)
         else:
             consent.revoked_at = None
@@ -203,12 +211,12 @@ def consents():
         return redirect(url_for("patient.consents"))
 
     existing = Consent.query.filter_by(patient_id=current_user.id).all()
-    consent_by_doctor = {c.doctor_id: c for c in existing}
+    consent_by_org = {c.organization_id: c for c in existing}
 
     return render_template(
         "patient/consents.html",
-        doctors=doctors,
-        consent_by_doctor=consent_by_doctor,
+        organizations=organizations,
+        consent_by_org=consent_by_org,
     )
 
 
@@ -278,6 +286,12 @@ def doctor_detail(doctor_id: int):
         doctor=doctor,
         feedback=feedback,
         my_feedback=my_feedback,
+        page_title=(doctor.user.name or ("Doctor #" + str(doctor.user_id))),
+        breadcrumbs=[
+            ("Home", url_for("patient.dashboard")),
+            ("Doctors", url_for("patient.doctors")),
+            ("Doctor profile", None),
+        ],
     )
 
 

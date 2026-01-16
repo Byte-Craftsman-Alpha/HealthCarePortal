@@ -1,0 +1,90 @@
+{% macro icon(name, cls='') -%}
+  <span class="iconify {{ cls }}" data-icon="{{ name }}"></span>
+{%- endmacro %}
+
+{% macro card(content='', cls='') -%}
+  <div class="minimal-card {{ cls }}">{{ caller() if caller else content }}</div>
+{%- endmacro %}
+
+{% macro section_title(title, subtitle='') -%}
+  <div>
+    <div class="text-sm font-semibold" style="color: var(--text-primary);">{{ title }}</div>
+    {% if subtitle %}
+      <div class="text-xs mt-1" style="color: var(--text-muted);">{{ subtitle }}</div>
+    {% endif %}
+  </div>
+{%- endmacro %}
+
+{% macro label(for_id, text) -%}
+  <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="{{ for_id }}">{{ text }}</label>
+{%- endmacro %}
+
+{% macro input(id, name, value='', type='text', placeholder='', required=False, autocomplete=None, cls='') -%}
+  <input
+    class="minimal-input {{ cls }}"
+    id="{{ id }}"
+    name="{{ name }}"
+    type="{{ type }}"
+    value="{{ value }}"
+    {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+    {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+    {% if required %}required{% endif %}
+  />
+{%- endmacro %}
+
+{% macro textarea(id, name, value='', rows=4, placeholder='', required=False, cls='') -%}
+  <textarea
+    class="minimal-input {{ cls }}"
+    id="{{ id }}"
+    name="{{ name }}"
+    rows="{{ rows }}"
+    {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+    {% if required %}required{% endif %}
+  >{{ value }}</textarea>
+{%- endmacro %}
+
+{% macro select(id, name, options, selected=None, required=False, cls='') -%}
+  <select class="minimal-input {{ cls }}" id="{{ id }}" name="{{ name }}" {% if required %}required{% endif %}>
+    {% for opt in options %}
+      {% set value = opt[0] %}
+      {% set label = opt[1] %}
+      <option value="{{ value }}" {% if selected is not none and (selected|string) == (value|string) %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+{%- endmacro %}
+
+{% macro btn(text, icon_name=None, variant='primary', type='button', href=None, cls='', title=None) -%}
+  {% set base = 'minimal-btn' if variant in ['primary', 'ghost'] else 'portal-btn-soft' %}
+  {% set variant_cls = 'minimal-btn-primary' if variant == 'primary' else '' %}
+  {% if href %}
+    <a class="{{ base }} {{ variant_cls }} {{ cls }}" href="{{ href }}" {% if title %}title="{{ title }}"{% endif %}>
+      {% if icon_name %}{{ icon(icon_name) }}{% endif %}
+      {{ text }}
+    </a>
+  {% else %}
+    <button class="{{ base }} {{ variant_cls }} {{ cls }}" type="{{ type }}" {% if title %}title="{{ title }}"{% endif %}>
+      {% if icon_name %}{{ icon(icon_name) }}{% endif %}
+      {{ text }}
+    </button>
+  {% endif %}
+{%- endmacro %}
+
+{% macro badge(text, tone='neutral') -%}
+  {% if tone == 'success' %}
+    <div class="text-xs uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1 inline-block">{{ text }}</div>
+  {% elif tone == 'danger' %}
+    <div class="text-xs uppercase tracking-wider text-rose-700 bg-rose-50 border border-rose-200 rounded-full px-3 py-1 inline-block">{{ text }}</div>
+  {% else %}
+    <div class="text-xs uppercase tracking-wider text-slate-500 bg-slate-50 border border-slate-200 rounded-full px-3 py-1 inline-block">{{ text }}</div>
+  {% endif %}
+{%- endmacro %}
+
+{% macro alert(text, tone='danger', cls='') -%}
+  {% if tone == 'danger' %}
+    <div class="minimal-card p-4 border border-rose-200 bg-rose-50 text-rose-700 {{ cls }}">{{ text }}</div>
+  {% elif tone == 'success' %}
+    <div class="minimal-card p-4 border border-emerald-200 bg-emerald-50 text-emerald-700 {{ cls }}">{{ text }}</div>
+  {% else %}
+    <div class="minimal-card p-4 border border-slate-200 bg-slate-50 text-slate-700 {{ cls }}">{{ text }}</div>
+  {% endif %}
+{%- endmacro %}

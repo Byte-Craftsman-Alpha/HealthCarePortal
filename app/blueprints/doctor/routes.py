@@ -23,7 +23,8 @@ def dashboard():
         .limit(10)
         .all()
     )
-    active_consents = Consent.query.filter_by(doctor_id=current_user.id, revoked_at=None).count()
+    org_id = getattr(getattr(current_user, "doctor", None), "organization_id", None)
+    active_consents = Consent.query.filter_by(organization_id=org_id, revoked_at=None).count() if org_id else 0
     return render_template("doctor/dashboard.html", upcoming=upcoming, active_consents=active_consents)
 
 
@@ -41,7 +42,8 @@ def appointments():
 @doctor_bp.get("/patients")
 @roles_required("doctor")
 def patients():
-    consents = Consent.query.filter_by(doctor_id=current_user.id, revoked_at=None).all()
+    org_id = getattr(getattr(current_user, "doctor", None), "organization_id", None)
+    consents = Consent.query.filter_by(organization_id=org_id, revoked_at=None).all() if org_id else []
     patient_ids = [c.patient_id for c in consents]
     patients = Patient.query.filter(Patient.user_id.in_(patient_ids)).all() if patient_ids else []
     return render_template("doctor/patients.html", patients=patients)
@@ -52,7 +54,8 @@ def patients():
 def patient_detail(patient_id: int):
     patient = Patient.query.get_or_404(patient_id)
 
-    consent = Consent.query.filter_by(patient_id=patient.user_id, doctor_id=current_user.id).first()
+    org_id = getattr(getattr(current_user, "doctor", None), "organization_id", None)
+    consent = Consent.query.filter_by(patient_id=patient.user_id, organization_id=org_id).first() if org_id else None
     can_add_record = bool(consent and consent.is_active and getattr(consent, "can_add_record", False))
 
     records = (
@@ -65,13 +68,26 @@ def patient_detail(patient_id: int):
         .order_by(Appointment.scheduled_at.desc())
         .all()
     )
-    log_event("doctor_view_patient", "patient", patient_id=patient.user_id, doctor_id=current_user.id, entity_id=patient.user_id)
+    log_event(
+        "doctor_view_patient",
+        "patient",
+        patient_id=patient.user_id,
+        doctor_id=current_user.id,
+        organization_id=org_id,
+        entity_id=patient.user_id,
+    )
     return render_template(
         "doctor/patient_detail.html",
         patient=patient,
         records=records,
         appointments=appts,
         can_add_record=can_add_record,
+        page_title=f"Patient #{patient.user_id}",
+        breadcrumbs=[
+            ("Home", url_for("doctor.dashboard")),
+            ("Patients", url_for("doctor.patients")),
+            (f"Patient #{patient.user_id}", None),
+        ],
     )
 
 
@@ -80,7 +96,8 @@ def patient_detail(patient_id: int):
 def add_record(patient_id: int):
     patient = Patient.query.get_or_404(patient_id)
 
-    consent = Consent.query.filter_by(patient_id=patient.user_id, doctor_id=current_user.id).first()
+    org_id = getattr(getattr(current_user, "doctor", None), "organization_id", None)
+    consent = Consent.query.filter_by(patient_id=patient.user_id, organization_id=org_id).first() if org_id else None
     if consent is None or not consent.is_active or not getattr(consent, "can_add_record", False):
         abort(403)
 
@@ -117,7 +134,14 @@ def add_record(patient_id: int):
     db.session.commit()
 
     log_action("doctor_add_medical_record", "medical_record")
-    log_event("record_added_by_doctor", "medical_record", patient_id=patient.user_id, doctor_id=current_user.id, entity_id=rec.id)
+    log_event(
+        "record_added_by_doctor",
+        "medical_record",
+        patient_id=patient.user_id,
+        doctor_id=current_user.id,
+        organization_id=org_id,
+        entity_id=rec.id,
+    )
     return redirect(url_for("doctor.patient_detail", patient_id=patient.user_id))
 
 
@@ -125,11 +149,20 @@ def add_record(patient_id: int):
 @roles_required("doctor")
 def record_view(record_id: int):
     rec = MedicalRecord.query.get_or_404(record_id)
-    consent = Consent.query.filter_by(patient_id=rec.patient_id, doctor_id=current_user.id).first()
+
+    org_id = getattr(getattr(current_user, "doctor", None), "organization_id", None)
+    consent = Consent.query.filter_by(patient_id=rec.patient_id, organization_id=org_id).first() if org_id else None
     if consent is None or not consent.is_active or not getattr(consent, "can_view_history", True):
         abort(403)
 
-    log_event("doctor_view_record", "medical_record", patient_id=rec.patient_id, doctor_id=current_user.id, entity_id=rec.id)
+    log_event(
+        "doctor_view_record",
+        "medical_record",
+        patient_id=rec.patient_id,
+        doctor_id=current_user.id,
+        organization_id=org_id,
+        entity_id=rec.id,
+    )
     return redirect(url_for("static", filename=rec.file_path))
 
 
@@ -140,7 +173,8 @@ def prescribe(appointment_id: int):
     if appt.doctor_id != current_user.id:
         abort(403)
 
-    consent = Consent.query.filter_by(patient_id=appt.patient_id, doctor_id=current_user.id).first()
+    org_id = getattr(getattr(current_user, "doctor", None), "organization_id", None)
+    consent = Consent.query.filter_by(patient_id=appt.patient_id, organization_id=org_id).first() if org_id else None
     if consent is None or not consent.is_active:
         abort(403)
 
@@ -163,4 +197,14 @@ def prescribe(appointment_id: int):
         log_action("issue_prescription", "prescription")
         return redirect(url_for("doctor.appointments"))
 
-    return render_template("doctor/prescribe.html", appointment=appt, prescription=existing)
+    return render_template(
+        "doctor/prescribe.html",
+        appointment=appt,
+        prescription=existing,
+        page_title=f"Prescription · Appointment #{appt.id}",
+        breadcrumbs=[
+            ("Home", url_for("doctor.dashboard")),
+            ("Appointments", url_for("doctor.appointments")),
+            (f"Appointment #{appt.id}", None),
+        ],
+    )

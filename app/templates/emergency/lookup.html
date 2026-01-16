@@ -1,12 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1 class="text-xl font-semibold text-slate-900">Emergency Lookup</h1>
-  <p class="text-sm text-slate-500 mt-1">Read-only access to blood group, allergies, chronic conditions, and emergency contacts.</p>
-
-  <div class="minimal-card p-6 mt-6 max-w-3xl">
+  <div class="minimal-card p-6 max-w-3xl">
     <form method="post" class="space-y-4">
       <div>
-        <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="query">Patient ID or email</label>
+        <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="query">Patient ID or email</label>
         <input class="minimal-input" id="query" name="query" type="text" placeholder="e.g., 101 or patient1@example.com" required />
       </div>
       <button class="minimal-btn minimal-btn-primary" type="submit">
@@ -16,25 +13,25 @@
     </form>
 
     {% if patient %}
-      <div class="mt-6 border border-slate-200 rounded-2xl p-5">
-        <div class="text-xs uppercase tracking-wider text-slate-500">Emergency profile for patient #{{ patient.user_id }}</div>
+      <div class="mt-6 rounded-2xl p-5" style="border: 1px solid var(--border-secondary);">
+        <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Emergency profile for patient #{{ patient.user_id }}</div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-          <div class="border border-slate-200 rounded-xl p-4">
-            <div class="text-xs uppercase tracking-wider text-slate-500">Blood group</div>
-            <div class="text-sm font-medium text-slate-900 mt-2">{{ patient.blood_group or 'Not set' }}</div>
+          <div class="rounded-xl p-4" style="border: 1px solid var(--border-secondary);">
+            <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Blood group</div>
+            <div class="text-sm font-medium mt-2" style="color: var(--text-primary);">{{ patient.blood_group or 'Not set' }}</div>
           </div>
-          <div class="border border-slate-200 rounded-xl p-4">
-            <div class="text-xs uppercase tracking-wider text-slate-500">Allergies</div>
-            <div class="text-sm font-medium text-slate-900 mt-2">{{ patient.allergies or 'Not set' }}</div>
+          <div class="rounded-xl p-4" style="border: 1px solid var(--border-secondary);">
+            <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Allergies</div>
+            <div class="text-sm font-medium mt-2" style="color: var(--text-primary);">{{ patient.allergies or 'Not set' }}</div>
           </div>
-          <div class="border border-slate-200 rounded-xl p-4">
-            <div class="text-xs uppercase tracking-wider text-slate-500">Chronic conditions</div>
-            <div class="text-sm font-medium text-slate-900 mt-2">{{ patient.chronic_conditions or 'Not set' }}</div>
+          <div class="rounded-xl p-4" style="border: 1px solid var(--border-secondary);">
+            <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Chronic conditions</div>
+            <div class="text-sm font-medium mt-2" style="color: var(--text-primary);">{{ patient.chronic_conditions or 'Not set' }}</div>
           </div>
-          <div class="border border-slate-200 rounded-xl p-4">
-            <div class="text-xs uppercase tracking-wider text-slate-500">Emergency contacts</div>
-            <div class="text-sm font-medium text-slate-900 mt-2">{{ patient.emergency_contacts or 'Not set' }}</div>
+          <div class="rounded-xl p-4" style="border: 1px solid var(--border-secondary);">
+            <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Emergency contacts</div>
+            <div class="text-sm font-medium mt-2" style="color: var(--text-primary);">{{ patient.emergency_contacts or 'Not set' }}</div>
           </div>
         </div>
       </div>

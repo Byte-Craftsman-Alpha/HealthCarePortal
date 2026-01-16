@@ -4,6 +4,7 @@ from app.models.audit_log import AuditLog
 from app.models.consent import Consent
 from app.models.doctor import Doctor
 from app.models.doctor_feedback import DoctorFeedback
+from app.models.organization import Organization
 from app.models.medical_record import MedicalRecord
 from app.models.patient import Patient
 from app.models.prescription import Prescription
@@ -14,6 +15,7 @@ __all__ = [
     "Patient",
     "Doctor",
     "DoctorFeedback",
+    "Organization",
     "MedicalRecord",
     "Consent",
     "Appointment",

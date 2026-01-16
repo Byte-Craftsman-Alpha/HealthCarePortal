@@ -1,19 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1 class="text-xl font-semibold text-slate-900">Consented Patients</h1>
-  <p class="text-sm text-slate-500 mt-1">Only patients who granted consent appear here.</p>
-
-  <div class="minimal-card p-6 mt-6">
+  <div class="minimal-card p-6">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       {% if patients|length == 0 %}
-        <div class="text-sm text-slate-500">No active consents yet.</div>
+        <div class="text-sm" style="color: var(--text-muted);">No active consents yet.</div>
       {% endif %}
 
       {% for p in patients %}
-        <a class="border border-slate-200 rounded-2xl p-5 hover:bg-slate-50 transition" href="{{ url_for('doctor.patient_detail', patient_id=p.user_id) }}">
-          <div class="text-sm font-semibold text-slate-900">Patient #{{ p.user_id }}</div>
-          <div class="text-xs text-slate-500 mt-2">Blood group: {{ p.blood_group or 'Not set' }}</div>
-          <div class="text-xs text-slate-500 mt-1">Allergies: {{ p.allergies or 'Not set' }}</div>
+        <a class="rounded-2xl p-5 transition" style="border: 1px solid var(--border-secondary);" href="{{ url_for('doctor.patient_detail', patient_id=p.user_id) }}">
+          <div class="text-sm font-semibold" style="color: var(--text-primary);">Patient #{{ p.user_id }}</div>
+          <div class="text-xs mt-2" style="color: var(--text-muted);">Blood group: {{ p.blood_group or 'Not set' }}</div>
+          <div class="text-xs mt-1" style="color: var(--text-muted);">Allergies: {{ p.allergies or 'Not set' }}</div>
         </a>
       {% endfor %}
     </div>

@@ -1,20 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-  <div class="flex items-start justify-between gap-4 flex-wrap">
-    <div>
-      <h1 class="text-xl font-semibold" style="color: var(--text-primary);">{{ doctor.user.name or ('Doctor #' ~ doctor.user_id) }}</h1>
-      <p class="text-sm mt-1" style="color: var(--text-muted);">{{ doctor.specialization }} · Hospital: {{ doctor.hospital_id or 'N/A' }}</p>
-    </div>
-    <div class="flex items-center gap-2 flex-wrap">
-      <a class="portal-btn-soft" href="{{ url_for('patient.doctors') }}">
-        <span class="iconify" data-icon="solar:arrow-left-linear"></span>
-        Back
-      </a>
-      <a class="minimal-btn minimal-btn-primary" href="{{ url_for('patient.appointments', doctor_id=doctor.user_id) }}">
-        <span class="iconify" data-icon="solar:calendar-add-linear"></span>
-        Book appointment
-      </a>
-    </div>
+  <div class="flex items-center justify-end gap-2 flex-wrap">
+    <a class="portal-btn-soft" href="{{ url_for('patient.doctors') }}">
+      <span class="iconify" data-icon="solar:arrow-left-linear"></span>
+      Back
+    </a>
+    <a class="minimal-btn minimal-btn-primary" href="{{ url_for('patient.appointments', doctor_id=doctor.user_id) }}">
+      <span class="iconify" data-icon="solar:calendar-add-linear"></span>
+      Book appointment
+    </a>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">

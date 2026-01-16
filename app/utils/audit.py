@@ -15,7 +15,14 @@ def log_action(action: str, entity: str) -> None:
     db.session.commit()
 
 
-def log_event(action: str, entity: str, patient_id: int, doctor_id: int | None = None, entity_id: int | None = None) -> None:
+def log_event(
+    action: str,
+    entity: str,
+    patient_id: int,
+    doctor_id: int | None = None,
+    organization_id: int | None = None,
+    entity_id: int | None = None,
+) -> None:
     actor_id = None
     if getattr(current_user, "is_authenticated", False):
         actor_id = current_user.id
@@ -25,6 +32,7 @@ def log_event(action: str, entity: str, patient_id: int, doctor_id: int | None =
             actor_id=actor_id,
             patient_id=patient_id,
             doctor_id=doctor_id,
+            organization_id=organization_id,
             action=action,
             entity=entity,
             entity_id=entity_id,

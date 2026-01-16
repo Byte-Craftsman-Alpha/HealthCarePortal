@@ -1,41 +1,31 @@
 {% extends 'base.html' %}
+{% from 'components/ui.html' import card, label, input, select, btn %}
 {% block content %}
-  <div class="flex items-start justify-between gap-4 flex-wrap">
-    <div>
-      <h1 class="text-xl font-semibold" style="color: var(--text-primary);">Medical Records</h1>
-      <p class="text-sm mt-1" style="color: var(--text-muted);">Upload records and optionally link them to an appointment.</p>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-    <div class="minimal-card p-6 lg:col-span-1">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    {% call card(cls='p-6 lg:col-span-1') %}
       <h2 class="text-lg font-semibold" style="color: var(--text-primary);">Upload</h2>
       <form method="post" enctype="multipart/form-data" class="space-y-4 mt-4">
         <div>
-          <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="file">File</label>
+          {{ label('file', 'File') }}
           <input class="minimal-input" id="file" name="file" type="file" required />
         </div>
         <div>
-          <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="description">Description</label>
-          <input class="minimal-input" id="description" name="description" type="text" placeholder="e.g., MRI report, blood test" />
+          {{ label('description', 'Description') }}
+          {{ input('description', 'description', placeholder='e.g., MRI report, blood test') }}
         </div>
         <div>
-          <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="appointment_id">Link to appointment (optional)</label>
-          <select class="minimal-input" id="appointment_id" name="appointment_id">
-            <option value="">Not linked</option>
-            {% for a in appointments %}
-              <option value="{{ a.id }}">#{{ a.id }} · {{ a.scheduled_at.strftime('%Y-%m-%d') }} · Doctor #{{ a.doctor_id }}</option>
-            {% endfor %}
-          </select>
+          {{ label('appointment_id', 'Link to appointment (optional)') }}
+          {% set appt_options = [('', 'Not linked')] %}
+          {% for a in appointments %}
+            {% set _ = appt_options.append((a.id, '#' ~ a.id ~ ' · ' ~ a.scheduled_at.strftime('%Y-%m-%d') ~ ' · Doctor #' ~ a.doctor_id)) %}
+          {% endfor %}
+          {{ select('appointment_id', 'appointment_id', appt_options) }}
         </div>
-        <button class="minimal-btn minimal-btn-primary w-full" type="submit">
-          <span class="iconify" data-icon="solar:upload-linear"></span>
-          Upload
-        </button>
+        {{ btn('Upload', icon_name='solar:upload-linear', variant='primary', type='submit', cls='w-full') }}
       </form>
-    </div>
+    {% endcall %}
 
-    <div class="minimal-card p-6 lg:col-span-2">
+    {% call card(cls='p-6 lg:col-span-2') %}
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold" style="color: var(--text-primary);">Your records</h2>
         <span class="text-xs" style="color: var(--text-muted);">{{ records|length }} total</span>
@@ -55,13 +45,10 @@
                 <div class="text-xs mt-1" style="color: var(--text-muted);">Linked appointment: #{{ r.appointment_id }}</div>
               {% endif %}
             </div>
-            <a class="portal-btn-soft" href="{{ url_for('patient.record_view', record_id=r.id) }}" target="_blank" rel="noopener">
-              <span class="iconify" data-icon="solar:eye-linear"></span>
-              View
-            </a>
+            {{ btn('View', icon_name='solar:eye-linear', href=url_for('patient.record_view', record_id=r.id), variant='soft', cls='', title='View') }}
           </div>
         {% endfor %}
       </div>
-    </div>
+    {% endcall %}
   </div>
 {% endblock %}

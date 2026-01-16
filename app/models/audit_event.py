@@ -31,6 +31,13 @@ class AuditEvent(db.Model):
         index=True,
     )
 
+    organization_id = db.Column(
+        db.Integer,
+        db.ForeignKey("organizations.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+
     action = db.Column(db.String(128), nullable=False, index=True)
     entity = db.Column(db.String(128), nullable=False, index=True)
     entity_id = db.Column(db.Integer, nullable=True, index=True)

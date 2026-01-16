@@ -23,6 +23,13 @@ class Appointment(db.Model):
         index=True,
     )
 
+    organization_id = db.Column(
+        db.Integer,
+        db.ForeignKey("organizations.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
+
     scheduled_at = db.Column(db.DateTime, nullable=False, index=True)
     status = db.Column(db.String(32), nullable=False, default="scheduled", index=True)
 
@@ -30,6 +37,7 @@ class Appointment(db.Model):
 
     patient = db.relationship("Patient", back_populates="appointments")
     doctor = db.relationship("Doctor", back_populates="appointments")
+    organization = db.relationship("Organization", back_populates="appointments")
 
     prescription = db.relationship(
         "Prescription",

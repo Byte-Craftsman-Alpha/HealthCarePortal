@@ -40,7 +40,17 @@ def doctor_consent_required(patient_id_arg: str = "patient_id"):
             if patient is None:
                 abort(404)
 
-            consent = Consent.query.filter_by(patient_id=patient.user_id, doctor_id=current_user.id).first()
+            org_id = None
+            try:
+                if getattr(current_user, "doctor", None) is not None:
+                    org_id = current_user.doctor.organization_id
+            except Exception:
+                org_id = None
+
+            if org_id is None:
+                abort(403)
+
+            consent = Consent.query.filter_by(patient_id=patient.user_id, organization_id=org_id).first()
             if consent is None or not consent.is_active or not getattr(consent, "can_view_history", True):
                 abort(403)
 

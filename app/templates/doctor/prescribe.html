@@ -1,17 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1 class="text-xl font-semibold text-slate-900">Write Prescription</h1>
-  <p class="text-sm text-slate-500 mt-1">Appointment #{{ appointment.id }} · Patient #{{ appointment.patient_id }}</p>
-
-  <div class="minimal-card p-6 mt-6 max-w-3xl">
+  <div class="minimal-card p-6 max-w-3xl">
     <form method="post" class="space-y-4">
       <div>
-        <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="notes">Notes</label>
+        <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="notes">Notes</label>
         <textarea class="minimal-input" id="notes" name="notes" rows="5" placeholder="Diagnosis, medication instructions, dosage">{{ prescription.notes if prescription else '' }}</textarea>
       </div>
 
       <div>
-        <label class="block text-xs uppercase tracking-wider text-slate-500 mb-2" for="pharmacy_id">Assign pharmacy (user id)</label>
+        <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="pharmacy_id">Assign pharmacy (user id)</label>
         <input class="minimal-input" id="pharmacy_id" name="pharmacy_id" type="text" value="{{ prescription.pharmacy_id if prescription else '' }}" placeholder="e.g., 9001" />
       </div>
 

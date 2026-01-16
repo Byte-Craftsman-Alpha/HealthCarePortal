@@ -14,121 +14,152 @@
   <body class="min-h-screen portal-shell">
     {% set role = current_user.role if current_user.is_authenticated else '' %}
 
-    <div class="min-h-screen grid grid-rows-[auto_1fr_auto] md:grid-rows-[auto_1fr]">
-      <header class="w-full">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <button type="button" class="portal-btn-soft md:hidden" onclick="toggleMobileNav()" aria-label="Open menu">
+    <div class="min-h-screen">
+      <aside id="desktopSidebar" class="hidden md:flex fixed inset-y-0 left-0 w-[280px] lg:w-[300px]">
+        <div class="portal-panel p-5 w-full flex flex-col overflow-hidden">
+          <div class="sidebar-top flex items-center justify-between gap-3">
+            <div class="sidebar-brand flex items-center gap-3 min-w-0">
+              <div class="sidebar-logo" style="background: var(--bg-tertiary); border: 1px solid var(--border-primary); color: var(--text-primary);">
+                <span class="iconify" data-icon="solar:health-linear"></span>
+              </div>
+              <div class="sidebar-label min-w-0">
+                <div class="text-[11px] uppercase tracking-[0.2em] truncate" style="color: var(--text-muted);">{{ (role if role else 'Portal')|capitalize }} Portal</div>
+                <div class="text-base font-semibold truncate" style="color: var(--text-primary);">Healthcare Platform</div>
+              </div>
+            </div>
+            <button id="portalNavToggleDesktop" type="button" class="portal-btn-soft" onclick="togglePortalNav()" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileNav">
               <span class="iconify" data-icon="solar:hamburger-menu-linear"></span>
             </button>
-            <div class="inline-flex items-center justify-center w-10 h-10 rounded-2xl portal-panel">
-              <span class="iconify" data-icon="solar:health-linear"></span>
-            </div>
-            <div>
-              <div class="text-[11px] uppercase tracking-[0.2em]" style="color: var(--text-muted);">{{ (role if role else 'Portal')|capitalize }} Portal</div>
-              <div class="text-xl font-semibold" style="color: var(--text-primary);">Healthcare Platform</div>
-            </div>
           </div>
 
-          <div class="flex items-center gap-3">
-            <button type="button" class="portal-btn-soft" onclick="toggleTheme()" aria-label="Toggle theme">
-              <span class="iconify" data-icon="solar:sun-2-linear"></span>
-              Theme
-            </button>
-            <form method="post" action="{{ url_for('auth.logout') }}" class="hidden sm:block">
-              <button class="minimal-btn minimal-btn-primary" type="submit">
-                <span class="iconify" data-icon="solar:logout-2-linear"></span>
-                Logout
-              </button>
-            </form>
-          </div>
-        </div>
-      </header>
-
-      <div class="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-[280px_1fr]">
-        <aside class="hidden md:block p-4 sm:p-6">
-          <div class="portal-panel rounded-2xl p-5">
-            <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Navigation</div>
+          <div class="mt-6">
+            <div class="text-xs uppercase tracking-wider sidebar-label" style="color: var(--text-muted);">Navigation</div>
             <nav class="mt-4 space-y-2">
               {% if role == 'patient' %}
                 <a class="minimal-nav-item {% if request.endpoint == 'patient.dashboard' %}active{% endif %}" href="{{ url_for('patient.dashboard') }}">
                   <span class="iconify" data-icon="solar:widget-2-linear"></span>
-                  <span class="text-sm font-medium">Dashboard</span>
+                  <span class="text-sm font-medium sidebar-label">Dashboard</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'patient.profile' %}active{% endif %}" href="{{ url_for('patient.profile') }}">
                   <span class="iconify" data-icon="solar:user-rounded-linear"></span>
-                  <span class="text-sm font-medium">Profile</span>
+                  <span class="text-sm font-medium sidebar-label">Profile</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint in ['patient.doctors', 'patient.doctor_detail'] %}active{% endif %}" href="{{ url_for('patient.doctors') }}">
                   <span class="iconify" data-icon="solar:stethoscope-linear"></span>
-                  <span class="text-sm font-medium">Doctors</span>
+                  <span class="text-sm font-medium sidebar-label">Doctors</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'patient.records' %}active{% endif %}" href="{{ url_for('patient.records') }}">
                   <span class="iconify" data-icon="solar:document-add-linear"></span>
-                  <span class="text-sm font-medium">Records</span>
+                  <span class="text-sm font-medium sidebar-label">Records</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'patient.history' %}active{% endif %}" href="{{ url_for('patient.history') }}">
                   <span class="iconify" data-icon="solar:clock-circle-linear"></span>
-                  <span class="text-sm font-medium">History</span>
+                  <span class="text-sm font-medium sidebar-label">History</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'patient.activity' %}active{% endif %}" href="{{ url_for('patient.activity') }}">
                   <span class="iconify" data-icon="solar:route-linear"></span>
-                  <span class="text-sm font-medium">Activity</span>
+                  <span class="text-sm font-medium sidebar-label">Activity</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'patient.appointments' %}active{% endif %}" href="{{ url_for('patient.appointments') }}">
                   <span class="iconify" data-icon="solar:calendar-mark-linear"></span>
-                  <span class="text-sm font-medium">Appointments</span>
+                  <span class="text-sm font-medium sidebar-label">Appointments</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'patient.consents' %}active{% endif %}" href="{{ url_for('patient.consents') }}">
                   <span class="iconify" data-icon="solar:shield-check-linear"></span>
-                  <span class="text-sm font-medium">Consents</span>
+                  <span class="text-sm font-medium sidebar-label">Consents</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'patient.prescriptions' %}active{% endif %}" href="{{ url_for('patient.prescriptions') }}">
                   <span class="iconify" data-icon="solar:pill-linear"></span>
-                  <span class="text-sm font-medium">Prescriptions</span>
+                  <span class="text-sm font-medium sidebar-label">Prescriptions</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'patient.emergency_profile' %}active{% endif %}" href="{{ url_for('patient.emergency_profile') }}">
                   <span class="iconify" data-icon="solar:heart-pulse-linear"></span>
-                  <span class="text-sm font-medium">Emergency</span>
+                  <span class="text-sm font-medium sidebar-label">Emergency</span>
                 </a>
               {% elif role == 'doctor' %}
                 <a class="minimal-nav-item {% if request.endpoint == 'doctor.dashboard' %}active{% endif %}" href="{{ url_for('doctor.dashboard') }}">
                   <span class="iconify" data-icon="solar:widget-2-linear"></span>
-                  <span class="text-sm font-medium">Dashboard</span>
+                  <span class="text-sm font-medium sidebar-label">Dashboard</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'doctor.appointments' %}active{% endif %}" href="{{ url_for('doctor.appointments') }}">
                   <span class="iconify" data-icon="solar:calendar-mark-linear"></span>
-                  <span class="text-sm font-medium">Appointments</span>
+                  <span class="text-sm font-medium sidebar-label">Appointments</span>
                 </a>
                 <a class="minimal-nav-item {% if request.endpoint == 'doctor.patients' %}active{% endif %}" href="{{ url_for('doctor.patients') }}">
                   <span class="iconify" data-icon="solar:users-group-rounded-linear"></span>
-                  <span class="text-sm font-medium">Patients</span>
+                  <span class="text-sm font-medium sidebar-label">Patients</span>
                 </a>
               {% elif role == 'pharmacy' %}
                 <a class="minimal-nav-item {% if request.endpoint == 'pharmacy.queue' %}active{% endif %}" href="{{ url_for('pharmacy.queue') }}">
                   <span class="iconify" data-icon="solar:pill-linear"></span>
-                  <span class="text-sm font-medium">Queue</span>
+                  <span class="text-sm font-medium sidebar-label">Queue</span>
                 </a>
               {% elif role == 'emergency' %}
                 <a class="minimal-nav-item {% if request.endpoint == 'emergency.lookup' %}active{% endif %}" href="{{ url_for('emergency.lookup') }}">
                   <span class="iconify" data-icon="solar:shield-warning-linear"></span>
-                  <span class="text-sm font-medium">Lookup</span>
+                  <span class="text-sm font-medium sidebar-label">Lookup</span>
                 </a>
               {% endif %}
             </nav>
+          </div>
 
-            <div class="mt-6 pt-5" style="border-top: 1px solid var(--portal-border);">
-              <form method="post" action="{{ url_for('auth.logout') }}">
-                <button class="minimal-btn minimal-btn-primary w-full" type="submit">
+          <div class="mt-auto pt-5" style="border-top: 1px solid var(--portal-border);">
+            <form method="post" action="{{ url_for('auth.logout') }}">
+              <button class="minimal-btn minimal-btn-primary w-full" type="submit" title="Logout">
+                <span class="iconify" data-icon="solar:logout-2-linear"></span>
+                <span class="sidebar-label">Logout</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </aside>
+
+      <div id="portalContent" class="md:pl-[280px] lg:pl-[300px]">
+        <header class="sticky top-0 z-30" style="background: color-mix(in srgb, var(--bg-primary) 88%, transparent); border-bottom: 1px solid var(--portal-border); backdrop-filter: blur(12px);">
+          <div class="max-w-7xl ml-0 mr-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+            <div class="flex items-start gap-3 pl-1">
+              <div>
+                {% if page_title %}
+                  <div class="text-xl font-semibold" style="color: var(--text-primary);">{{ page_title }}</div>
+                {% endif %}
+                {% if current_date %}
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">{{ current_date }}</div>
+                {% endif %}
+                {% if breadcrumbs %}
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">
+                    {% for crumb in breadcrumbs %}
+                      {% set label = crumb[0] %}
+                      {% set href = crumb[1] %}
+                      {% if href %}
+                        <a href="{{ href }}" class="hover:underline">{{ label }}</a>
+                      {% else %}
+                        <span>{{ label }}</span>
+                      {% endif %}
+                      {% if not loop.last %}
+                        <span class="px-2" style="color: var(--text-muted);">/</span>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button type="button" class="portal-btn-soft" onclick="toggleTheme()" aria-label="Toggle theme">
+                <span class="iconify" data-icon="solar:sun-2-linear"></span>
+                Theme
+              </button>
+              <form method="post" action="{{ url_for('auth.logout') }}" class="hidden sm:block">
+                <button class="minimal-btn minimal-btn-primary" type="submit">
                   <span class="iconify" data-icon="solar:logout-2-linear"></span>
                   Logout
                 </button>
               </form>
             </div>
           </div>
-        </aside>
+        </header>
 
-        <main class="p-4 sm:p-6 md:p-8">
+        <main class="max-w-7xl ml-0 mr-auto px-4 sm:px-6 py-6 md:py-8">
           <div class="fade-in">
             {% if error %}
               <div class="minimal-card p-4 border border-rose-200 bg-rose-50 text-rose-700 mb-6">{{ error }}</div>

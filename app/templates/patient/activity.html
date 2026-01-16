@@ -1,13 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-  <div class="flex items-start justify-between gap-4 flex-wrap">
-    <div>
-      <h1 class="text-xl font-semibold" style="color: var(--text-primary);">Activity</h1>
-      <p class="text-sm mt-1" style="color: var(--text-muted);">Detailed timeline of access and updates on your data.</p>
-    </div>
-  </div>
-
-  <div class="minimal-card p-6 mt-6">
+  <div class="minimal-card p-6">
     <div class="space-y-3">
       {% if events|length == 0 %}
         <div class="text-sm" style="color: var(--text-muted);">No activity yet.</div>
