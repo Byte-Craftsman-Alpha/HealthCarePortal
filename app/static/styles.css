@@ -475,3 +475,260 @@ header.sticky {
   color: var(--admin-muted);
   background: color-mix(in srgb, var(--admin-surface-2) 70%, transparent);
 }
+
+.landing-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.landing-nav:hover {
+  background: color-mix(in srgb, var(--bg-tertiary) 80%, transparent);
+  border-color: color-mix(in srgb, var(--border-primary) 80%, transparent);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.landing-orb {
+  position: absolute;
+  width: 780px;
+  height: 780px;
+  border-radius: 999px;
+  filter: blur(40px);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.landing-orb-1 {
+  left: -340px;
+  top: -260px;
+  background: radial-gradient(circle at 30% 30%, rgba(99, 102, 241, 0.55), transparent 55%),
+    radial-gradient(circle at 70% 70%, rgba(14, 165, 233, 0.40), transparent 60%);
+}
+
+.landing-orb-2 {
+  right: -360px;
+  top: 140px;
+  background: radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.40), transparent 55%),
+    radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.28), transparent 60%);
+}
+
+.landing-hero-card {
+  background: color-mix(in srgb, var(--bg-primary) 70%, transparent);
+  border: 1px solid var(--portal-border);
+  border-radius: var(--radius-2xl);
+  padding: 1.5rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 40px 120px rgba(15, 23, 42, 0.14), 0 2px 10px rgba(15, 23, 42, 0.06);
+}
+
+.landing-mini-card {
+  background: color-mix(in srgb, var(--bg-tertiary) 65%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-primary) 80%, transparent);
+  border-radius: var(--radius-xl);
+  padding: 1rem;
+}
+
+.landing-mini-card .iconify {
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
+  color: var(--brand-primary);
+}
+
+.landing-stat {
+  background: color-mix(in srgb, var(--bg-primary) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-primary) 80%, transparent);
+  border-radius: var(--radius-xl);
+  padding: 0.95rem;
+}
+
+.landing-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-xl);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--brand-soft) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-primary) 80%, transparent);
+  color: var(--brand-secondary);
+  flex: 0 0 auto;
+}
+
+.landing-icon .iconify {
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
+}
+
+.landing-kicker {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.landing-title {
+  margin-top: 0.6rem;
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+@media (min-width: 640px) {
+  .landing-title {
+    font-size: 2.35rem;
+  }
+}
+
+.landing-subtitle {
+  margin-top: 0.8rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.landing-section-head {
+  max-width: 58rem;
+}
+
+.landing-ach-card {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 1rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid color-mix(in srgb, var(--border-primary) 80%, transparent);
+  background: color-mix(in srgb, var(--bg-primary) 70%, transparent);
+}
+
+.landing-ach-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-xl);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--bg-tertiary) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-primary) 80%, transparent);
+  color: var(--brand-primary);
+  flex: 0 0 auto;
+}
+
+.landing-ach-icon .iconify {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+}
+
+.landing-timeline {
+  border: 1px solid var(--portal-border);
+  border-radius: var(--radius-2xl);
+  background: color-mix(in srgb, var(--bg-primary) 65%, transparent);
+  padding: 1.25rem;
+}
+
+.landing-timeline-item {
+  position: relative;
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.85rem 0.5rem;
+}
+
+.landing-timeline-item:not(:last-child) {
+  border-bottom: 1px dashed color-mix(in srgb, var(--border-primary) 85%, transparent);
+}
+
+.landing-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  margin-top: 0.35rem;
+  background: linear-gradient(180deg, #6366f1, #8b5cf6);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+  flex: 0 0 auto;
+}
+
+.landing-feature-card {
+  overflow: hidden;
+}
+
+.landing-feature-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-xl);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--brand-soft) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-primary) 80%, transparent);
+  color: var(--brand-secondary);
+}
+
+.landing-feature-icon .iconify {
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
+}
+
+.landing-cta {
+  border: 1px solid var(--portal-border);
+  border-radius: var(--radius-2xl);
+  padding: 1.25rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand-soft) 55%, transparent), color-mix(in srgb, var(--bg-primary) 75%, transparent));
+}
+
+.landing-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--bg-tertiary) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-primary) 80%, transparent);
+}
+
+.landing-contact-item .iconify {
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
+  color: var(--brand-primary);
+  margin-top: 0.1rem;
+}
+
+.landing-footer-link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.landing-footer-link:hover {
+  background: color-mix(in srgb, var(--bg-tertiary) 80%, transparent);
+  border-color: color-mix(in srgb, var(--border-primary) 80%, transparent);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.landing-reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.landing-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

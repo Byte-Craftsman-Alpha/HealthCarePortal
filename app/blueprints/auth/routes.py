@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from flask import redirect, render_template, request, url_for
-from flask_login import login_user, logout_user
+from flask_login import current_user, login_user, logout_user
 
 from app.blueprints.auth import auth_bp
 from app.extensions import db
@@ -25,7 +25,9 @@ def _redirect_for_role(role: str):
 
 @auth_bp.get("/")
 def home():
-    return redirect(url_for("auth.login"))
+    if current_user.is_authenticated:
+        return _redirect_for_role(current_user.role)
+    return render_template("landing.html")
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])

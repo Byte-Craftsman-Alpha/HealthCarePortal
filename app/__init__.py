@@ -82,12 +82,13 @@ def create_app(env_name: str = "development") -> Flask:
 
         now = datetime.now()
         current_date = f"{now:%A}, {now:%B} {now.day}, {now:%Y}"
+        current_year = now.year
         if role_name in mappings and endpoint in mappings[role_name]:
             page_title, breadcrumbs = mappings[role_name][endpoint]
         else:
             if endpoint.endswith(".dashboard"):
                 page_title = "Dashboard"
 
-        return {"page_title": page_title, "breadcrumbs": breadcrumbs, "current_date": current_date}
+        return {"page_title": page_title, "breadcrumbs": breadcrumbs, "current_date": current_date, "current_year": current_year}
 
     return app

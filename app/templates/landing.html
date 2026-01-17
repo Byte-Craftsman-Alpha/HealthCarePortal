@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MedicareX — Team Paradox</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.15/dist/tailwind.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body class="min-h-screen portal-shell">
+    <header class="sticky top-0 z-40" style="background: color-mix(in srgb, var(--bg-primary) 80%, transparent); border-bottom: 1px solid var(--portal-border); backdrop-filter: blur(14px);">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+        <a href="#top" class="flex items-center gap-3 min-w-0">
+          <div class="landing-badge inline-flex items-center justify-center w-11 h-11 rounded-2xl" style="background: color-mix(in srgb, var(--bg-tertiary) 72%, transparent); border: 1px solid var(--portal-border);">
+            <span class="iconify" data-icon="solar:health-linear"></span>
+          </div>
+          <div class="min-w-0">
+            <div class="text-[11px] uppercase tracking-[0.2em]" style="color: var(--text-muted);">Team Paradox presents</div>
+            <div class="text-lg font-semibold truncate" style="color: var(--text-primary);">MedicareX</div>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-2">
+          <a class="landing-nav" href="#overview">Overview</a>
+          <a class="landing-nav" href="#achievements">Achievements</a>
+          <a class="landing-nav" href="#features">Platform</a>
+          <a class="landing-nav" href="#contact">Get in touch</a>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <button type="button" class="portal-btn-soft" onclick="toggleTheme()" aria-label="Toggle theme">
+            <span class="iconify" data-icon="solar:sun-2-linear"></span>
+            Theme
+          </button>
+          <a class="minimal-btn minimal-btn-primary" href="{{ url_for('auth.login') }}">
+            <span class="iconify" data-icon="solar:login-2-linear"></span>
+            Sign in
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top" class="relative overflow-hidden">
+      <div class="landing-orb landing-orb-1" aria-hidden="true"></div>
+      <div class="landing-orb landing-orb-2" aria-hidden="true"></div>
+
+      <section class="max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-10 sm:pb-14">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          <div class="landing-reveal">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold" style="background: color-mix(in srgb, var(--brand-soft) 60%, transparent); color: var(--brand-secondary); border: 1px solid color-mix(in srgb, var(--border-primary) 70%, transparent);">
+              <span class="iconify" data-icon="solar:shield-check-linear"></span>
+              Patient-owned. Tamper-resistant. Rapid care.
+            </div>
+
+            <h1 class="mt-5 text-4xl sm:text-5xl font-semibold leading-tight" style="color: var(--text-primary);">
+              A centralized, controlled, patient-oriented healthcare platform.
+            </h1>
+            <p class="mt-5 text-base sm:text-lg leading-relaxed" style="color: var(--text-muted);">
+              Built by a student tech-community, MedicareX helps patients and doctors act faster with seamless health actions, emergency-ready details, and privacy-first medical records that stay correct, complete, and accessible when it matters.
+            </p>
+
+            <div class="mt-7 flex flex-col sm:flex-row gap-3">
+              <a class="minimal-btn minimal-btn-primary" href="{{ url_for('auth.register') }}">
+                <span class="iconify" data-icon="solar:user-plus-linear"></span>
+                Create account
+              </a>
+              <a class="portal-btn-soft" href="#features">
+                <span class="iconify" data-icon="solar:bolt-linear"></span>
+                Explore platform
+              </a>
+            </div>
+
+            <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div class="landing-stat landing-reveal">
+                <div class="text-sm font-semibold" style="color: var(--text-primary);">Emergency-first</div>
+                <div class="text-xs mt-1" style="color: var(--text-muted);">Quick lookup, critical details ready</div>
+              </div>
+              <div class="landing-stat landing-reveal">
+                <div class="text-sm font-semibold" style="color: var(--text-primary);">Audit-ready</div>
+                <div class="text-xs mt-1" style="color: var(--text-muted);">Traceable actions, safer workflows</div>
+              </div>
+              <div class="landing-stat landing-reveal">
+                <div class="text-sm font-semibold" style="color: var(--text-primary);">Doctor friendly</div>
+                <div class="text-xs mt-1" style="color: var(--text-muted);">Complete history for root-cause care</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="landing-reveal">
+            <div class="landing-hero-card">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">What MedicareX reduces</div>
+                  <div class="mt-2 text-xl font-semibold" style="color: var(--text-primary);">Wrong meds. Extra expenses. Slow diagnosis.</div>
+                </div>
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl" style="background: color-mix(in srgb, var(--bg-tertiary) 75%, transparent); border: 1px solid var(--portal-border);">
+                  <span class="iconify" data-icon="solar:heart-pulse-linear"></span>
+                </div>
+              </div>
+
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="landing-mini-card">
+                  <div class="flex items-center gap-3">
+                    <span class="iconify" data-icon="solar:document-text-linear"></span>
+                    <div>
+                      <div class="text-sm font-semibold" style="color: var(--text-primary);">Tamper-proof records</div>
+                      <div class="text-xs mt-1" style="color: var(--text-muted);">Trusted history over time</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="landing-mini-card">
+                  <div class="flex items-center gap-3">
+                    <span class="iconify" data-icon="solar:shield-user-linear"></span>
+                    <div>
+                      <div class="text-sm font-semibold" style="color: var(--text-primary);">Patient control</div>
+                      <div class="text-xs mt-1" style="color: var(--text-muted);">Access & consents built-in</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="landing-mini-card">
+                  <div class="flex items-center gap-3">
+                    <span class="iconify" data-icon="solar:global-linear"></span>
+                    <div>
+                      <div class="text-sm font-semibold" style="color: var(--text-primary);">Global research</div>
+                      <div class="text-xs mt-1" style="color: var(--text-muted);">Better insights, better outcomes</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="landing-mini-card">
+                  <div class="flex items-center gap-3">
+                    <span class="iconify" data-icon="solar:bolt-circle-linear"></span>
+                    <div>
+                      <div class="text-sm font-semibold" style="color: var(--text-primary);">Seamless actions</div>
+                      <div class="text-xs mt-1" style="color: var(--text-muted);">Appointments, prescriptions & more</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+                <div class="text-sm" style="color: var(--text-muted);">
+                  Launching by Team Paradox — students building healthcare with rigor.
+                </div>
+                <a class="portal-btn-soft" href="#contact">
+                  <span class="iconify" data-icon="solar:chat-round-line-linear"></span>
+                  Talk to us
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-14">
+        <div class="landing-section-head landing-reveal">
+          <div class="landing-kicker">Introduction & overview</div>
+          <h2 class="landing-title">Healthcare, simplified and verified.</h2>
+          <p class="landing-subtitle">
+            MedicareX is built to centralize medical history while keeping patient control intact. It streamlines emergency response, reduces wrong medication risks, and helps doctors reach the root cause with complete context.
+          </p>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="minimal-card p-5 landing-reveal">
+            <div class="flex items-start gap-3">
+              <div class="landing-icon">
+                <span class="iconify" data-icon="solar:shield-check-linear"></span>
+              </div>
+              <div>
+                <div class="text-base font-semibold" style="color: var(--text-primary);">Privacy-first trust</div>
+                <div class="mt-2 text-sm leading-relaxed" style="color: var(--text-muted);">Consent-driven access with an auditable trail of actions to keep records accountable.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="minimal-card p-5 landing-reveal">
+            <div class="flex items-start gap-3">
+              <div class="landing-icon">
+                <span class="iconify" data-icon="solar:heart-pulse-linear"></span>
+              </div>
+              <div>
+                <div class="text-base font-semibold" style="color: var(--text-primary);">Emergency ready</div>
+                <div class="mt-2 text-sm leading-relaxed" style="color: var(--text-muted);">Fast access to critical details: allergies, conditions, and emergency contacts when seconds matter.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="minimal-card p-5 landing-reveal">
+            <div class="flex items-start gap-3">
+              <div class="landing-icon">
+                <span class="iconify" data-icon="solar:stethoscope-linear"></span>
+              </div>
+              <div>
+                <div class="text-base font-semibold" style="color: var(--text-primary);">Doctor clarity</div>
+                <div class="mt-2 text-sm leading-relaxed" style="color: var(--text-muted);">Complete history, prescriptions, and records help avoid duplicate diagnostics and wrong medication.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="achievements" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-14">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <div class="landing-reveal">
+            <div class="landing-kicker">Achievements</div>
+            <h2 class="landing-title">A platform foundation that’s ready to scale.</h2>
+            <p class="landing-subtitle">Our early milestones focus on safety, usability, and operational readiness for real healthcare workflows.</p>
+
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="landing-ach-card">
+                <div class="landing-ach-icon"><span class="iconify" data-icon="solar:shield-keyhole-linear"></span></div>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">Role-based portals</div>
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">Patients, doctors, pharmacy & emergency access</div>
+                </div>
+              </div>
+              <div class="landing-ach-card">
+                <div class="landing-ach-icon"><span class="iconify" data-icon="solar:document-text-linear"></span></div>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">Medical record workflows</div>
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">Structured history, uploads, prescriptions</div>
+                </div>
+              </div>
+              <div class="landing-ach-card">
+                <div class="landing-ach-icon"><span class="iconify" data-icon="solar:clock-circle-linear"></span></div>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">Traceability</div>
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">Auditable actions to reduce fraud & confusion</div>
+                </div>
+              </div>
+              <div class="landing-ach-card">
+                <div class="landing-ach-icon"><span class="iconify" data-icon="solar:heart-pulse-linear"></span></div>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">Emergency flow</div>
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">Quick lookup and critical profile access</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="landing-reveal">
+            <div class="landing-timeline">
+              <div class="landing-timeline-item">
+                <div class="landing-dot"></div>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">Cut wrong medications</div>
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">Ensure doctors see allergies, interactions, and history before prescribing.</div>
+                </div>
+              </div>
+              <div class="landing-timeline-item">
+                <div class="landing-dot"></div>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">Reduce unnecessary costs</div>
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">Stop repeated diagnostics by keeping reports available, verified, and organized.</div>
+                </div>
+              </div>
+              <div class="landing-timeline-item">
+                <div class="landing-dot"></div>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">Make care faster</div>
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">From appointments to emergency actions, workflows stay seamless and responsive.</div>
+                </div>
+              </div>
+              <div class="landing-timeline-item">
+                <div class="landing-dot"></div>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">Enable research responsibly</div>
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">Push towards global health research with ethics-led data practices.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-14">
+        <div class="landing-section-head landing-reveal">
+          <div class="landing-kicker">Our platform features</div>
+          <h2 class="landing-title">Everything you need for safe, complete healthcare decisions.</h2>
+          <p class="landing-subtitle">Designed for patients, doctors, and responders—built to reduce friction, increase accuracy, and maintain integrity.</p>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="minimal-card p-5 landing-feature-card landing-reveal">
+            <div class="landing-feature-icon"><span class="iconify" data-icon="solar:folder-security-linear"></span></div>
+            <div class="mt-4 text-base font-semibold" style="color: var(--text-primary);">Tamper-proof medical records</div>
+            <div class="mt-2 text-sm leading-relaxed" style="color: var(--text-muted);">Maintain integrity of reports and history so trust doesn’t get lost across visits.</div>
+          </div>
+          <div class="minimal-card p-5 landing-feature-card landing-reveal">
+            <div class="landing-feature-icon"><span class="iconify" data-icon="solar:shield-user-linear"></span></div>
+            <div class="mt-4 text-base font-semibold" style="color: var(--text-primary);">Patient-controlled access</div>
+            <div class="mt-2 text-sm leading-relaxed" style="color: var(--text-muted);">Consent workflows and clear ownership keep data access intentional and secure.</div>
+          </div>
+          <div class="minimal-card p-5 landing-feature-card landing-reveal">
+            <div class="landing-feature-icon"><span class="iconify" data-icon="solar:stethoscope-linear"></span></div>
+            <div class="mt-4 text-base font-semibold" style="color: var(--text-primary);">Doctor-ready medical history</div>
+            <div class="mt-2 text-sm leading-relaxed" style="color: var(--text-muted);">See complete context to identify root causes and prescribe with confidence.</div>
+          </div>
+          <div class="minimal-card p-5 landing-feature-card landing-reveal">
+            <div class="landing-feature-icon"><span class="iconify" data-icon="solar:heart-pulse-linear"></span></div>
+            <div class="mt-4 text-base font-semibold" style="color: var(--text-primary);">Emergency details on demand</div>
+            <div class="mt-2 text-sm leading-relaxed" style="color: var(--text-muted);">Rapid, structured access to allergies, blood group, and emergency contacts.</div>
+          </div>
+          <div class="minimal-card p-5 landing-feature-card landing-reveal">
+            <div class="landing-feature-icon"><span class="iconify" data-icon="solar:pill-linear"></span></div>
+            <div class="mt-4 text-base font-semibold" style="color: var(--text-primary);">Medication clarity</div>
+            <div class="mt-2 text-sm leading-relaxed" style="color: var(--text-muted);">Reduce wrong medications and repeated prescriptions through visibility and traceability.</div>
+          </div>
+          <div class="minimal-card p-5 landing-feature-card landing-reveal">
+            <div class="landing-feature-icon"><span class="iconify" data-icon="solar:global-linear"></span></div>
+            <div class="mt-4 text-base font-semibold" style="color: var(--text-primary);">Global health research</div>
+            <div class="mt-2 text-sm leading-relaxed" style="color: var(--text-muted);">A foundation to support research and insights—ethically, securely, and transparently.</div>
+          </div>
+        </div>
+
+        <div class="mt-8 landing-cta landing-reveal">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <div class="text-lg font-semibold" style="color: var(--text-primary);">Ready to explore MedicareX?</div>
+              <div class="mt-1 text-sm" style="color: var(--text-muted);">Create an account and see the portals in action.</div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <a class="minimal-btn minimal-btn-primary" href="{{ url_for('auth.register') }}">
+                <span class="iconify" data-icon="solar:user-plus-linear"></span>
+                Get started
+              </a>
+              <a class="portal-btn-soft" href="{{ url_for('auth.login') }}">
+                <span class="iconify" data-icon="solar:login-2-linear"></span>
+                Sign in
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-14">
+        <div class="landing-section-head landing-reveal">
+          <div class="landing-kicker">Get in touch</div>
+          <h2 class="landing-title">Partner, contribute, or guide the launch.</h2>
+          <p class="landing-subtitle">We’re a student-led tech community. If you want to collaborate, mentor, or pilot the platform, reach out.</p>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 lg:grid-cols-5 gap-4">
+          <div class="lg:col-span-3 minimal-card p-6 landing-reveal">
+            <form id="contactForm" class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="contactName">Name</label>
+                  <input class="minimal-input" id="contactName" name="name" type="text" placeholder="Your name" required />
+                </div>
+                <div>
+                  <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="contactEmail">Email</label>
+                  <input class="minimal-input" id="contactEmail" name="email" type="email" placeholder="you@example.com" required />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="contactTopic">Topic</label>
+                <select class="minimal-input" id="contactTopic" name="topic" required>
+                  <option value="Collaboration">Collaboration</option>
+                  <option value="Mentorship">Mentorship</option>
+                  <option value="Pilot / Hospital">Pilot / Hospital</option>
+                  <option value="Community">Community</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs uppercase tracking-wider mb-2" style="color: var(--text-muted);" for="contactMessage">Message</label>
+                <textarea class="minimal-input" id="contactMessage" name="message" rows="5" placeholder="Tell us what you’d like to build with Team Paradox..." required></textarea>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+                <button class="minimal-btn minimal-btn-primary" type="submit">
+                  <span class="iconify" data-icon="solar:plain-2-linear"></span>
+                  Send message
+                </button>
+                <div class="text-xs" style="color: var(--text-muted);">This opens your email client — no data is stored here.</div>
+              </div>
+            </form>
+          </div>
+
+          <div class="lg:col-span-2 minimal-card p-6 landing-reveal">
+            <div class="text-sm font-semibold" style="color: var(--text-primary);">Team Paradox</div>
+            <div class="mt-2 text-sm leading-relaxed" style="color: var(--text-muted);">
+              A student tech-community driven to make healthcare more accurate, accessible, and accountable.
+            </div>
+
+            <div class="mt-5 space-y-3">
+              <div class="landing-contact-item">
+                <span class="iconify" data-icon="solar:map-point-linear"></span>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">Community</div>
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">Students building real-world healthcare systems</div>
+                </div>
+              </div>
+              <div class="landing-contact-item">
+                <span class="iconify" data-icon="solar:shield-check-linear"></span>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">Mission</div>
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">Cut wrong meds, reduce costs, and speed up correct care</div>
+                </div>
+              </div>
+              <div class="landing-contact-item">
+                <span class="iconify" data-icon="solar:global-linear"></span>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">Vision</div>
+                  <div class="text-xs mt-1" style="color: var(--text-muted);">Support global health research with ethical data practices</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6">
+              <a class="portal-btn-soft w-full justify-center" href="{{ url_for('auth.register') }}">
+                <span class="iconify" data-icon="solar:user-plus-linear"></span>
+                Join the platform
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="border-t" style="border-color: var(--portal-border); background: color-mix(in srgb, var(--bg-primary) 75%, transparent);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <div class="flex items-center gap-3">
+                <div class="inline-flex items-center justify-center w-11 h-11 rounded-2xl" style="background: color-mix(in srgb, var(--bg-tertiary) 72%, transparent); border: 1px solid var(--portal-border);">
+                  <span class="iconify" data-icon="solar:health-linear"></span>
+                </div>
+                <div>
+                  <div class="text-sm font-semibold" style="color: var(--text-primary);">MedicareX</div>
+                  <div class="text-xs" style="color: var(--text-muted);">By Team Paradox</div>
+                </div>
+              </div>
+              <div class="mt-3 text-sm leading-relaxed" style="color: var(--text-muted);">
+                A patient-owned healthcare platform for verified records, faster response, and better outcomes.
+              </div>
+            </div>
+
+            <div>
+              <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Explore</div>
+              <div class="mt-3 grid grid-cols-2 gap-2">
+                <a class="landing-footer-link" href="#overview">Overview</a>
+                <a class="landing-footer-link" href="#achievements">Achievements</a>
+                <a class="landing-footer-link" href="#features">Features</a>
+                <a class="landing-footer-link" href="#contact">Contact</a>
+              </div>
+            </div>
+
+            <div>
+              <div class="text-xs uppercase tracking-wider" style="color: var(--text-muted);">Access</div>
+              <div class="mt-3 flex flex-col gap-2">
+                <a class="landing-footer-link" href="{{ url_for('auth.login') }}">Sign in</a>
+                <a class="landing-footer-link" href="{{ url_for('auth.register') }}">Create account</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-10 pt-6 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between" style="border-top: 1px solid var(--portal-border);">
+            <div class="text-xs" style="color: var(--text-muted);">© {{ current_year if current_year else '' }} Team Paradox. All rights reserved.</div>
+            <div class="text-xs" style="color: var(--text-muted);">Built for safer, faster, and more accountable care.</div>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
