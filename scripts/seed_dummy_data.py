@@ -10,7 +10,7 @@ if PROJECT_ROOT not in sys.path:
 
 from app import create_app
 from app.extensions import db
-from app.models import Appointment, Consent, Doctor, MedicalRecord, Patient, Prescription, User
+from app.models import Appointment, AuditEvent, Consent, Doctor, MedicalRecord, Organization, Patient, Prescription, User
 
 
 def get_or_create_user(email: str, role: str, password: str) -> User:
@@ -52,10 +52,19 @@ def ensure_doctor(user: User, specialization: str, hospital_id: str) -> Doctor:
     return d
 
 
-def ensure_consent(patient_id: int, doctor_id: int, active: bool) -> Consent:
-    c = Consent.query.filter_by(patient_id=patient_id, doctor_id=doctor_id).first()
+def ensure_organization(name: str, org_type: str = "hospital", verified: bool = True) -> Organization:
+    org = Organization.query.filter_by(name=name).first()
+    if org is None:
+        org = Organization(name=name, org_type=org_type, verified=verified)
+        db.session.add(org)
+        db.session.commit()
+    return org
+
+
+def ensure_consent(patient_id: int, organization_id: int, active: bool, can_view_history: bool = True, can_add_record: bool = False) -> Consent:
+    c = Consent.query.filter_by(patient_id=patient_id, organization_id=organization_id).first()
     if c is None:
-        c = Consent(patient_id=patient_id, doctor_id=doctor_id)
+        c = Consent(patient_id=patient_id, organization_id=organization_id)
         db.session.add(c)
 
     if active:
@@ -65,21 +74,32 @@ def ensure_consent(patient_id: int, doctor_id: int, active: bool) -> Consent:
         c.revoked_at = datetime.utcnow() - timedelta(days=1)
         c.granted_at = datetime.utcnow() - timedelta(days=10)
 
+    c.can_view_history = can_view_history
+    c.can_add_record = can_add_record
+
     db.session.commit()
     return c
 
 
-def ensure_appointment(patient_id: int, doctor_id: int, scheduled_at: datetime, status: str) -> Appointment:
+def ensure_appointment(patient_id: int, doctor_id: int, organization_id: int | None, scheduled_at: datetime, status: str) -> Appointment:
     a = (
         Appointment.query.filter_by(patient_id=patient_id, doctor_id=doctor_id, scheduled_at=scheduled_at)
         .order_by(Appointment.id.asc())
         .first()
     )
     if a is None:
-        a = Appointment(patient_id=patient_id, doctor_id=doctor_id, scheduled_at=scheduled_at, status=status)
+        a = Appointment(
+            patient_id=patient_id,
+            doctor_id=doctor_id,
+            organization_id=organization_id,
+            scheduled_at=scheduled_at,
+            status=status,
+        )
         db.session.add(a)
     else:
         a.status = status
+        if a.organization_id is None:
+            a.organization_id = organization_id
 
     db.session.commit()
     return a
@@ -99,13 +119,48 @@ def ensure_prescription(appointment_id: int, pharmacy_user_id: int, notes: str) 
     return p
 
 
-def ensure_record(patient_id: int, file_path: str, description: str) -> MedicalRecord:
+def ensure_record(
+    patient_id: int,
+    file_path: str,
+    description: str,
+    created_by_user_id: int | None = None,
+    appointment_id: int | None = None,
+) -> MedicalRecord:
     r = MedicalRecord.query.filter_by(patient_id=patient_id, file_path=file_path).first()
     if r is None:
-        r = MedicalRecord(patient_id=patient_id, file_path=file_path, description=description)
+        r = MedicalRecord(
+            patient_id=patient_id,
+            file_path=file_path,
+            description=description,
+            created_by_user_id=created_by_user_id,
+            appointment_id=appointment_id,
+        )
         db.session.add(r)
-        db.session.commit()
+    else:
+        if r.created_by_user_id is None:
+            r.created_by_user_id = created_by_user_id
+        if r.appointment_id is None:
+            r.appointment_id = appointment_id
+        if r.description is None:
+            r.description = description
+
+    db.session.commit()
     return r
+
+
+def seed_audit(patient_id: int, actor_id: int | None, doctor_id: int | None, organization_id: int | None, action: str, entity: str, entity_id: int | None = None) -> None:
+    ev = AuditEvent(
+        actor_id=actor_id,
+        patient_id=patient_id,
+        doctor_id=doctor_id,
+        organization_id=organization_id,
+        action=action,
+        entity=entity,
+        entity_id=entity_id,
+        timestamp=datetime.utcnow() - timedelta(minutes=30),
+    )
+    db.session.add(ev)
+    db.session.commit()
 
 
 def main() -> None:
@@ -126,9 +181,17 @@ def main() -> None:
         d2u = get_or_create_user("doctor2@example.com", "doctor", "doctorpass")
         d3u = get_or_create_user("doctor3@example.com", "doctor", "doctorpass")
 
+        org1 = ensure_organization("HOSP-001", org_type="hospital", verified=True)
+        org2 = ensure_organization("HOSP-002", org_type="hospital", verified=True)
+
         d1 = ensure_doctor(d1u, "Cardiology", "HOSP-001")
         d2 = ensure_doctor(d2u, "Dermatology", "HOSP-001")
         d3 = ensure_doctor(d3u, "General Medicine", "HOSP-002")
+
+        d1.organization_id = org1.id
+        d2.organization_id = org1.id
+        d3.organization_id = org2.id
+        db.session.commit()
 
         print("[seed] Creating patients...")
         patients = []
@@ -150,26 +213,41 @@ def main() -> None:
             patients.append(p)
 
         print("[seed] Creating consents...")
-        ensure_consent(patients[0].user_id, d1.user_id, active=True)
-        ensure_consent(patients[0].user_id, d2.user_id, active=False)
-        ensure_consent(patients[1].user_id, d1.user_id, active=True)
-        ensure_consent(patients[2].user_id, d3.user_id, active=True)
-        ensure_consent(patients[3].user_id, d2.user_id, active=True)
+        ensure_consent(patients[0].user_id, org1.id, active=True, can_view_history=True, can_add_record=True)
+        ensure_consent(patients[1].user_id, org1.id, active=True, can_view_history=True, can_add_record=False)
+        ensure_consent(patients[2].user_id, org2.id, active=True, can_view_history=True, can_add_record=True)
+        ensure_consent(patients[3].user_id, org1.id, active=False, can_view_history=True, can_add_record=False)
 
         print("[seed] Creating appointments...")
         now = datetime.utcnow().replace(minute=0, second=0, microsecond=0)
-        a1 = ensure_appointment(patients[0].user_id, d1.user_id, now + timedelta(days=1), "scheduled")
-        a2 = ensure_appointment(patients[1].user_id, d1.user_id, now - timedelta(days=2), "completed")
-        a3 = ensure_appointment(patients[2].user_id, d3.user_id, now + timedelta(days=3), "scheduled")
-        a4 = ensure_appointment(patients[3].user_id, d2.user_id, now - timedelta(days=5), "completed")
+        a1 = ensure_appointment(patients[0].user_id, d1.user_id, d1.organization_id, now + timedelta(days=1), "scheduled")
+        a2 = ensure_appointment(patients[1].user_id, d1.user_id, d1.organization_id, now - timedelta(days=2), "completed")
+        a3 = ensure_appointment(patients[2].user_id, d3.user_id, d3.organization_id, now + timedelta(days=3), "scheduled")
+        a4 = ensure_appointment(patients[3].user_id, d2.user_id, d2.organization_id, now - timedelta(days=5), "completed")
 
         print("[seed] Creating prescriptions...")
         ensure_prescription(a2.id, pharmacy.id, "Topical cream once daily for 7 days")
         ensure_prescription(a4.id, pharmacy.id, "Antihistamine at night for 5 days")
 
         print("[seed] Creating sample records...")
-        ensure_record(patients[0].user_id, "uploads/sample_record_patient1.txt", "Lab summary")
-        ensure_record(patients[1].user_id, "uploads/sample_record_patient2.txt", "Imaging report")
+        ensure_record(
+            patients[0].user_id,
+            "uploads/sample_record_patient1.txt",
+            "Lab summary",
+            created_by_user_id=patients[0].user_id,
+            appointment_id=a1.id,
+        )
+        ensure_record(
+            patients[1].user_id,
+            "uploads/sample_record_patient2.txt",
+            "Imaging report",
+            created_by_user_id=d1.user_id,
+            appointment_id=a2.id,
+        )
+
+        print("[seed] Creating audit events...")
+        seed_audit(patients[0].user_id, actor_id=d1.user_id, doctor_id=d1.user_id, organization_id=d1.organization_id, action="doctor_view_patient", entity="patient", entity_id=patients[0].user_id)
+        seed_audit(patients[1].user_id, actor_id=d1.user_id, doctor_id=d1.user_id, organization_id=d1.organization_id, action="record_added_by_doctor", entity="medical_record", entity_id=None)
 
         os.makedirs(os.path.join(app.root_path, "static", "uploads"), exist_ok=True)
         for path, content in [
